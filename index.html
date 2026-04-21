@@ -1,503 +1,794 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ms">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #36c0a0; -webkit-text-stroke: #36c0a0}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc; background-color: #171818}
-    span.s1 {font-kerning: none; background-color: #171818}
-    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
-    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
-    span.s4 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
-    span.s5 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
-    span.s6 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
-    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
-    span.s8 {font-kerning: none; color: #a7c598; background-color: #171818; -webkit-text-stroke: 0px #a7c598}
-    span.s9 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
-    span.s10 {font-kerning: none}
-    span.s11 {font-kerning: none; color: #6d7378; background-color: #171818; -webkit-text-stroke: 0px #6d7378}
-    span.s12 {font-kerning: none; color: #f67c30; background-color: #171818; -webkit-text-stroke: 0px #f67c30}
-    span.s13 {font-kerning: none; color: #36c0a0; background-color: #171818; -webkit-text-stroke: 0px #36c0a0}
-    span.s14 {font-kerning: none; color: #71c083; background-color: #171818; -webkit-text-stroke: 0px #71c083}
-    span.s15 {font-kerning: none; color: #6d6d6d; -webkit-text-stroke: 0px #6d6d6d}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuiz Pintar (Berdasarkan Gambar)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f2f2f2;
+            touch-action: manipulation;
+        }
+
+        .kahoot-bg {
+            background-color: #46178f;
+        }
+
+        /* Warna bentuk */
+        .color-red { background-color: #e21b3c; border-bottom: 4px solid #b81631; }
+        .color-blue { background-color: #1368ce; border-bottom: 4px solid #0f54a6; }
+        .color-yellow { background-color: #d89e00; border-bottom: 4px solid #b08100; }
+        .color-green { background-color: #26890c; border-bottom: 4px solid #1f6e0a; }
+
+        /* Hover efek untuk butang pemain */
+        .answer-btn:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+            margin-bottom: 4px;
+        }
+
+        /* Bentuk-bentuk (Shapes) */
+        .shape {
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+        }
+        .shape-triangle {
+            width: 0; height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 34.6px solid white;
+        }
+        .shape-diamond {
+            width: 28px; height: 28px;
+            background-color: white;
+            transform: rotate(45deg);
+            margin: 6px;
+        }
+        .shape-circle {
+            width: 36px; height: 36px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .shape-square {
+            width: 32px; height: 32px;
+            background-color: white;
+        }
+
+        .screen { display: none; }
+        .screen.active { display: flex; }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #46178f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">html</span><span class="s4"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s5">"ms"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s5">"UTF-8"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s4"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">title</span><span class="s3">&gt;</span><span class="s1">Sistem Tanda OMR Cikgu</span><span class="s3">&lt;/</span><span class="s6">title</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>@</span><span class="s6">media</span><span class="s1"> </span><span class="s6">print</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>body * {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">visibility:</span><span class="s1"> </span><span class="s5">hidden</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">#tab-cetak</span><span class="s7">,</span><span class="s4"> </span><span class="s1">#tab-cetak</span><span class="s4"> </span><span class="s1">*</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">visibility:</span><span class="s1"> </span><span class="s5">visible</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s6">#tab-cetak</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s5">absolute</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">left:</span><span class="s1"> </span><span class="s8">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">top:</span><span class="s1"> </span><span class="s8">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s8">100%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s6">.no-print</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">none</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">.print-container</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">4px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> </span><span class="s5">black</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">padding:</span><span class="s1"> </span><span class="s8">20px</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">margin:</span><span class="s1"> </span><span class="s8">0</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s8">100%</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s2">box-sizing:</span><span class="s1"> </span><span class="s5">border-box</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.omr-bubble</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s8">24px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">height:</span><span class="s1"> </span><span class="s8">24px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #000</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s4"> </span><span class="s8">50%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">inline-flex</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">align-items:</span><span class="s1"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">justify-content:</span><span class="s4"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">font-size:</span><span class="s1"> </span><span class="s8">10px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">font-weight:</span><span class="s1"> </span><span class="s5">bold</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">color:</span><span class="s1"> #ccc</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s3">&lt;</span><span class="s6">body</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-gray-50 text-gray-800 font-sans antialiased"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"max-w-md mx-auto min-h-screen flex flex-col no-print bg-white shadow-lg"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">&lt;!-- Header --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">header</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-blue-600 text-white p-4 text-center shadow-md"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">h1</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-2xl font-bold"</span><span class="s3">&gt;</span><span class="s1">CikguScan ✅</span><span class="s3">&lt;/</span><span class="s6">h1</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-sm opacity-80"</span><span class="s3">&gt;</span><span class="s1">Sistem Tanda Jawapan Automatik</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">header</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">&lt;!-- Navigation --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">nav</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex border-b"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"tukarTab('skema')"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"nav-skema"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-1 py-3 text-center font-semibold text-blue-600 border-b-2 border-blue-600"</span><span class="s3">&gt;</span><span class="s4">Skema</span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"tukarTab('cetak')"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"nav-cetak"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-1 py-3 text-center font-semibold text-gray-500 border-b-2 border-transparent"</span><span class="s3">&gt;</span><span class="s4">Cetak</span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"tukarTab('imbas')"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"nav-imbas"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-1 py-3 text-center font-semibold text-gray-500 border-b-2 border-transparent"</span><span class="s3">&gt;</span><span class="s4">Imbas</span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">nav</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">&lt;!-- Content Area --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">main</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-1 p-4 overflow-y-auto"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- TAB: SKEMA JAWAPAN --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tab-skema"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-content"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-lg font-bold mb-4"</span><span class="s3">&gt;</span><span class="s1">Tetapkan Skema Jawapan</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-sm text-gray-600 mb-4"</span><span class="s3">&gt;</span><span class="s1">Sila pilih jawapan yang betul untuk 20 soalan di bawah.</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"borang-skema"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"space-y-3"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">&lt;!-- Javascript akan jana borang ni --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"simpanSkema()"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-6 w-full bg-green-500 text-white font-bold py-3 rounded-lg shadow hover:bg-green-600 active:bg-green-700 transition"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>Simpan Skema</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- TAB: CETAK BORANG --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tab-cetak"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-content hidden"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"no-print mb-4"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-lg font-bold"</span><span class="s3">&gt;</span><span class="s1">Cetak Borang OMR</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-sm text-gray-600 mb-4"</span><span class="s3">&gt;</span><span class="s1">Cetak borang ini dan berikan kepada pelajar. Minta mereka hitamkan bulatan sepenuhnya dengan pen/pensel gelap.</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"window.print()"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full bg-blue-500 text-white font-bold py-3 rounded-lg shadow hover:bg-blue-600 transition mb-4"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>🖨️ Tekan Untuk Cetak</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">&lt;!-- Kawasan yang akan dicetak --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kertas-omr"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"print-container border-4 border-black p-6 bg-white mx-auto"</span><span class="s4"> </span><span class="s2">style</span><span class="s3">=</span><span class="s1">"max-width: 400px;"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-center border-b-2 border-black pb-4 mb-4"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-xl font-bold uppercase tracking-wider"</span><span class="s3">&gt;</span><span class="s4">Kertas Jawapan</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex justify-between mt-4 text-left"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s3">&gt;</span><span class="s1">Nama: _____________________</span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s3">&gt;</span><span class="s1">Kelas: _________</span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">&lt;!-- Grid Soalan untuk Cetakan --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"grid-cetak"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex flex-col gap-2"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s11">&lt;!-- Jana guna JS --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-8 text-center text-xs text-gray-500"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>* Hitamkan bulatan penuh-penuh. Jangan pangkah atau tick.</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- TAB: IMBAS (KAMERA) --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tab-imbas"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-content hidden flex-col h-full"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-lg font-bold mb-2"</span><span class="s3">&gt;</span><span class="s1">Imbas Jawapan Pelajar</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-sm text-gray-600 mb-4"</span><span class="s3">&gt;</span><span class="s1">Pastikan kotak hitam pada borang masuk </span><span class="s3">&lt;</span><span class="s6">b</span><span class="s3">&gt;</span><span class="s1">ngam-ngam</span><span class="s3">&lt;/</span><span class="s6">b</span><span class="s3">&gt;</span><span class="s1"> dalam petak merah di bawah. Kawasan mesti terang.</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"relative flex-1 bg-black rounded-lg overflow-hidden flex items-center justify-center"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">video</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kamera"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"absolute inset-0 w-full h-full object-cover"</span><span class="s4"> </span><span class="s2">autoplay</span><span class="s4"> </span><span class="s2">playsinline</span><span class="s3">&gt;&lt;/</span><span class="s6">video</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">&lt;!-- Petak Panduan (Alignment Guide) --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"petak-panduan"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"absolute border-4 border-red-500 shadow-[0_0_0_999px_rgba(0,0,0,0.5)] z-10 box-border pointer-events-none"</span><span class="s4"> </span><span class="s2">style</span><span class="s3">=</span><span class="s1">"width: 80%; height: 80%; top: 10%; left: 10%;"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"mt-4 flex gap-2"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"mulakanKamera()"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg shadow hover:bg-gray-300"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>Buka Kamera</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"tangkapDanTanda()"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex-[2] bg-blue-600 text-white font-bold py-3 rounded-lg shadow hover:bg-blue-700"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>📸 Imbas &amp; Tanda</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- TAB: KEPUTUSAN (Tersembunyi asalnya) --&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tab-keputusan"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-content hidden"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-2xl font-bold text-center mb-2"</span><span class="s3">&gt;</span><span class="s4">Keputusan</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-blue-50 rounded-lg p-6 text-center mb-6 border border-blue-200"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-gray-600 text-sm font-bold uppercase"</span><span class="s3">&gt;</span><span class="s4">Markah Pelajar</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-5xl font-black text-blue-600 mt-2"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"skor-markah"</span><span class="s3">&gt;</span><span class="s4">0/20</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-lg font-semibold text-gray-800 mt-1"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"skor-peratus"</span><span class="s3">&gt;</span><span class="s4">0%</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"font-bold mb-3 border-b pb-1"</span><span class="s3">&gt;</span><span class="s1">Analisis Imej</span><span class="s3">&lt;/</span><span class="s6">h3</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-xs text-gray-500 mb-2"</span><span class="s3">&gt;</span><span class="s1">Titik hijau/merah menunjukkan tempat kamera membaca bulatan.</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"border-2 border-gray-300 rounded overflow-hidden bg-gray-100"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">canvas</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"canvas-debug"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full h-auto"</span><span class="s3">&gt;&lt;/</span><span class="s6">canvas</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-4 border-t pt-4"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"font-bold mb-3"</span><span class="s3">&gt;</span><span class="s1">Butiran Jawapan</span><span class="s3">&lt;/</span><span class="s6">h3</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"senarai-keputusan"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"space-y-2 text-sm"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                        </span></span><span class="s1">&lt;!-- Keputusan terperinci masuk sini --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">onclick</span><span class="s3">=</span><span class="s1">"tukarTab('imbas')"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-6 w-full bg-blue-600 text-white font-bold py-3 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>Imbas Kertas Seterusnya</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">main</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s9">const</span><span class="s4"> </span><span class="s1">JUMLAH_SOALAN</span><span class="s4"> </span><span class="s7">=</span><span class="s4"> </span><span class="s12">20</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">const</span><span class="s1"> </span><span class="s13">PILIHAN</span><span class="s1"> </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span><span class="s14">'A'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'B'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'C'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'D'</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">let</span><span class="s1"> skemaJawapan </span><span class="s7">=</span><span class="s1"> </span><span class="s13">Array</span><span class="s7">(</span><span class="s13">JUMLAH_SOALAN</span><span class="s7">).</span><span class="s1">fill</span><span class="s7">(</span><span class="s9">null</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">let</span><span class="s1"> streamKamera </span><span class="s7">=</span><span class="s1"> </span><span class="s9">null</span><span class="s7">;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// Inisialisasi bila muka surat dibuka</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s14">'DOMContentLoaded'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>janaBorangSkema</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>janaBorangCetak</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNGSI UI &amp; NAVIGASI</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> tukarTab</span><span class="s7">(</span><span class="s1">idTab</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Sembunyikan semua tab</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">querySelectorAll</span><span class="s7">(</span><span class="s14">'.tab-content'</span><span class="s7">).</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">el </span><span class="s7">=&gt;</span><span class="s1"> el</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s14">'hidden'</span><span class="s7">));</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Reset warna butang nav</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">querySelectorAll</span><span class="s7">(</span><span class="s14">'nav button'</span><span class="s7">).</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">el </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>el</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s14">'text-blue-600'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'border-blue-600'</span><span class="s7">);</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>el</span><span class="s7">.</span><span class="s4">classList</span><span class="s7">.</span><span class="s4">add</span><span class="s7">(</span><span class="s1">'text-gray-500'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'border-transparent'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Tunjuk tab yang dipilih</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'tab-'</span><span class="s1"> </span><span class="s7">+</span><span class="s1"> idTab</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s14">'hidden'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Highlight butang (kecuali untuk keputusan)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> navBtn </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'nav-'</span><span class="s1"> </span><span class="s7">+</span><span class="s1"> idTab</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s7">(</span><span class="s1">navBtn</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>navBtn</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s14">'text-gray-500'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'border-transparent'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>navBtn</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s14">'text-blue-600'</span><span class="s7">,</span><span class="s1"> </span><span class="s14">'border-blue-600'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Urus kamera - tutup kamera kalau bukan di tab imbas untuk jimat bateri</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">idTab </span><span class="s7">===</span><span class="s1"> </span><span class="s14">'imbas'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>mulakanKamera</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s9">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>hentikanKamera</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNGSI SKEMA JAWAPAN</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> janaBorangSkema</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> bekas </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'borang-skema'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>bekas</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s14">''</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">for</span><span class="s1"> </span><span class="s7">(</span><span class="s9">let</span><span class="s1"> i </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span><span class="s1"> i </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s13">JUMLAH_SOALAN</span><span class="s7">;</span><span class="s1"> i</span><span class="s7">++)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> divSoalan </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s14">'div'</span><span class="s7">);</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>divSoalan</span><span class="s7">.</span><span class="s4">className </span><span class="s7">=</span><span class="s4"> </span><span class="s1">"flex items-center justify-between bg-white p-3 rounded border shadow-sm"</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> htmlRadio </span><span class="s7">=</span><span class="s1"> </span><span class="s13">PILIHAN</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">p </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s14">`</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="flex items-center space-x-1 cursor-pointer"&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="radio" name="soalan_</span><span class="s7">${</span><span class="s4">i</span><span class="s7">}</span><span class="s1">" value="</span><span class="s7">${</span><span class="s4">p</span><span class="s7">}</span><span class="s1">" class="w-5 h-5 text-blue-600 focus:ring-blue-500" </span><span class="s7">${</span><span class="s4">skemaJawapan</span><span class="s7">[</span><span class="s4">i</span><span class="s7">]</span><span class="s4"> </span><span class="s7">===</span><span class="s4"> p </span><span class="s7">?</span><span class="s4"> </span><span class="s1">'checked'</span><span class="s4"> </span><span class="s7">:</span><span class="s4"> </span><span class="s1">''</span><span class="s7">}</span><span class="s1"> onchange="setJawapan(</span><span class="s7">${</span><span class="s4">i</span><span class="s7">}</span><span class="s1">, '</span><span class="s7">${</span><span class="s4">p</span><span class="s7">}</span><span class="s1">')"&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="font-medium text-gray-700"&gt;</span><span class="s7">${</span><span class="s4">p</span><span class="s7">}</span><span class="s1">&lt;/span&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/label&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">).</span><span class="s4">join</span><span class="s7">(</span><span class="s1">''</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>divSoalan</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s14">`</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="font-bold text-gray-700 w-8"&gt;</span><span class="s7">${</span><span class="s4">i </span><span class="s7">+</span><span class="s4"> </span><span class="s12">1</span><span class="s7">}</span><span class="s1">.&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex space-x-4"&gt;</span><span class="s7">${</span><span class="s4">htmlRadio</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>bekas</span><span class="s7">.</span><span class="s1">appendChild</span><span class="s7">(</span><span class="s1">divSoalan</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> setJawapan</span><span class="s7">(</span><span class="s1">indeks</span><span class="s7">,</span><span class="s1"> pilihan</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>skemaJawapan</span><span class="s7">[</span><span class="s1">indeks</span><span class="s7">]</span><span class="s1"> </span><span class="s7">=</span><span class="s1"> pilihan</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> simpanSkema</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">skemaJawapan</span><span class="s7">.</span><span class="s1">includes</span><span class="s7">(</span><span class="s9">null</span><span class="s7">))</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>alert</span><span class="s7">(</span><span class="s1">"Cikgu, ada soalan yang belum disetkan jawapannya tu!"</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">            </span>alert</span><span class="s7">(</span><span class="s1">"Skema jawapan berjaya disimpan! Cikgu boleh mula mencetak atau mengimbas."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNGSI CETAK BORANG</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> janaBorangCetak</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> bekas </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'grid-cetak'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>bekas</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s14">''</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">for</span><span class="s1"> </span><span class="s7">(</span><span class="s9">let</span><span class="s1"> i </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span><span class="s1"> i </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s13">JUMLAH_SOALAN</span><span class="s7">;</span><span class="s1"> i</span><span class="s7">++)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> divBaris </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s14">'div'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>divBaris</span><span class="s7">.</span><span class="s1">className </span><span class="s7">=</span><span class="s1"> </span><span class="s14">"flex items-center py-1"</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> htmlBulatan </span><span class="s7">=</span><span class="s1"> </span><span class="s13">PILIHAN</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">p </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s14">`</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="omr-bubble mx-1"&gt;</span><span class="s7">${</span><span class="s4">p</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">).</span><span class="s4">join</span><span class="s7">(</span><span class="s1">''</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>divBaris</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s14">`</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="font-bold w-8 text-right pr-2"&gt;</span><span class="s7">${</span><span class="s4">i </span><span class="s7">+</span><span class="s4"> </span><span class="s12">1</span><span class="s7">}</span><span class="s1">.&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex-1 flex justify-around pl-4 border-l-2 border-dashed border-gray-300"&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">${</span><span class="s4">htmlBulatan</span><span class="s7">}</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>bekas</span><span class="s7">.</span><span class="s1">appendChild</span><span class="s7">(</span><span class="s1">divBaris</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNGSI KAMERA &amp; IMBASAN (OMR ASAS)</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">// ==========================================</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">async</span><span class="s1"> </span><span class="s9">function</span><span class="s1"> mulakanKamera</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> video </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'kamera'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">streamKamera</span><span class="s7">)</span><span class="s1"> </span><span class="s9">return</span><span class="s7">;</span><span class="s1"> </span><span class="s11">// Dah jalan</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">try</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// Minta kamera belakang (environment)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>streamKamera </span><span class="s7">=</span><span class="s1"> </span><span class="s9">await</span><span class="s1"> navigator</span><span class="s7">.</span><span class="s1">mediaDevices</span><span class="s7">.</span><span class="s1">getUserMedia</span><span class="s7">({</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>video</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> facingMode</span><span class="s7">:</span><span class="s1"> </span><span class="s14">'environment'</span><span class="s7">,</span><span class="s1"> width</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> ideal</span><span class="s7">:</span><span class="s1"> </span><span class="s12">1280</span><span class="s1"> </span><span class="s7">},</span><span class="s1"> height</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> ideal</span><span class="s7">:</span><span class="s1"> </span><span class="s12">720</span><span class="s1"> </span><span class="s7">}</span><span class="s1"> </span><span class="s7">}</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>video</span><span class="s7">.</span><span class="s1">srcObject </span><span class="s7">=</span><span class="s1"> streamKamera</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s9">catch</span><span class="s1"> </span><span class="s7">(</span><span class="s1">err</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s14">"Ralat kamera:"</span><span class="s7">,</span><span class="s1"> err</span><span class="s7">);</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>alert</span><span class="s7">(</span><span class="s1">"Tak dapat buka kamera. Pastikan cikgu benarkan akses kamera untuk laman web ni."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> hentikanKamera</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">streamKamera</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>streamKamera</span><span class="s7">.</span><span class="s1">getTracks</span><span class="s7">().</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">track </span><span class="s7">=&gt;</span><span class="s1"> track</span><span class="s7">.</span><span class="s1">stop</span><span class="s7">());</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>streamKamera </span><span class="s7">=</span><span class="s1"> </span><span class="s9">null</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'kamera'</span><span class="s7">).</span><span class="s1">srcObject </span><span class="s7">=</span><span class="s1"> </span><span class="s9">null</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> tangkapDanTanda</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">skemaJawapan</span><span class="s7">.</span><span class="s1">includes</span><span class="s7">(</span><span class="s9">null</span><span class="s7">))</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>alert</span><span class="s7">(</span><span class="s1">"Cikgu belum siapkan skema jawapan! Sila ke tab 'Skema' dahulu."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> video </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'kamera'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(!</span><span class="s1">video</span><span class="s7">.</span><span class="s1">videoWidth</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span>alert</span><span class="s7">(</span><span class="s1">"Kamera belum bersedia."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Buat canvas sementara untuk tangkap imej penuh dari video</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> canvas </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s14">'canvas'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>canvas</span><span class="s7">.</span><span class="s1">width </span><span class="s7">=</span><span class="s1"> video</span><span class="s7">.</span><span class="s1">videoWidth</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>canvas</span><span class="s7">.</span><span class="s1">height </span><span class="s7">=</span><span class="s1"> video</span><span class="s7">.</span><span class="s1">videoHeight</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> ctx </span><span class="s7">=</span><span class="s1"> canvas</span><span class="s7">.</span><span class="s1">getContext</span><span class="s7">(</span><span class="s14">'2d'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> willReadFrequently</span><span class="s7">:</span><span class="s1"> </span><span class="s9">true</span><span class="s1"> </span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ctx</span><span class="s7">.</span><span class="s1">drawImage</span><span class="s7">(</span><span class="s1">video</span><span class="s7">,</span><span class="s1"> </span><span class="s12">0</span><span class="s7">,</span><span class="s1"> </span><span class="s12">0</span><span class="s7">,</span><span class="s1"> canvas</span><span class="s7">.</span><span class="s1">width</span><span class="s7">,</span><span class="s1"> canvas</span><span class="s7">.</span><span class="s1">height</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Analisis Imej</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>analisisImej</span><span class="s7">(</span><span class="s1">canvas</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> analisisImej</span><span class="s7">(</span><span class="s1">sumberCanvas</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> ctx </span><span class="s7">=</span><span class="s1"> sumberCanvas</span><span class="s7">.</span><span class="s1">getContext</span><span class="s7">(</span><span class="s14">'2d'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> cw </span><span class="s7">=</span><span class="s1"> sumberCanvas</span><span class="s7">.</span><span class="s1">width</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> ch </span><span class="s7">=</span><span class="s1"> sumberCanvas</span><span class="s7">.</span><span class="s1">height</span><span class="s7">;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Kita assume kotak panduan merah adalah pada: top: 10%, left: 10%, w: 80%, h: 80% (rujuk CSS style)</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Ini bermaksud kertas OMR patut berada dalam kawasan piksel ini:</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> boxX </span><span class="s7">=</span><span class="s1"> cw </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.10</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> boxY </span><span class="s7">=</span><span class="s1"> ch </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.10</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> boxW </span><span class="s7">=</span><span class="s1"> cw </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.80</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> boxH </span><span class="s7">=</span><span class="s1"> ch </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.80</span><span class="s7">;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Susunan geografi borang cetakan kita (secara peratusan kasar dari kotak borang)</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Ketinggian Header (Nama dll) lebih kurang 20% dari atas</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> headerOffsetP </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0.22</span><span class="s7">;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> ruangSoalanH </span><span class="s7">=</span><span class="s1"> boxH </span><span class="s7">*</span><span class="s1"> </span><span class="s7">(</span><span class="s12">1</span><span class="s1"> </span><span class="s7">-</span><span class="s1"> headerOffsetP</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> mulaY </span><span class="s7">=</span><span class="s1"> boxY </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">boxH </span><span class="s7">*</span><span class="s1"> headerOffsetP</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> jarakBaris </span><span class="s7">=</span><span class="s1"> ruangSoalanH </span><span class="s7">/</span><span class="s1"> </span><span class="s13">JUMLAH_SOALAN</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// X offset untuk A, B, C, D (berdasarkan rupa grid cetak tadi)</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Kotak nombor ambil ~15% ruang kiri, border dash. Pilihan bermula dari ~25% hingga 90%</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> posXPilihan </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>boxX </span><span class="s7">+</span><span class="s1"> boxW </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.30</span><span class="s7">,</span><span class="s1"> </span><span class="s11">// A</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>boxX </span><span class="s7">+</span><span class="s1"> boxW </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.50</span><span class="s7">,</span><span class="s1"> </span><span class="s11">// B</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>boxX </span><span class="s7">+</span><span class="s1"> boxW </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.70</span><span class="s7">,</span><span class="s1"> </span><span class="s11">// C</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>boxX </span><span class="s7">+</span><span class="s1"> boxW </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.90</span><span class="s1"><span class="Apple-converted-space">  </span></span><span class="s11">// D</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">];</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> markah </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> butiran </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> markahDikesan </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Sediakan debug canvas untuk tunjuk apa yang sistem nampak</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> canvasDebug </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'canvas-debug'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>canvasDebug</span><span class="s7">.</span><span class="s1">width </span><span class="s7">=</span><span class="s1"> cw</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>canvasDebug</span><span class="s7">.</span><span class="s1">height </span><span class="s7">=</span><span class="s1"> ch</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">const</span><span class="s1"> ctxDebug </span><span class="s7">=</span><span class="s1"> canvasDebug</span><span class="s7">.</span><span class="s1">getContext</span><span class="s7">(</span><span class="s14">'2d'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ctxDebug</span><span class="s7">.</span><span class="s1">drawImage</span><span class="s7">(</span><span class="s1">sumberCanvas</span><span class="s7">,</span><span class="s1"> </span><span class="s12">0</span><span class="s7">,</span><span class="s1"> </span><span class="s12">0</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Lukis kotak tekaan</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ctxDebug</span><span class="s7">.</span><span class="s1">strokeStyle </span><span class="s7">=</span><span class="s1"> </span><span class="s14">"yellow"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ctxDebug</span><span class="s7">.</span><span class="s1">lineWidth </span><span class="s7">=</span><span class="s1"> </span><span class="s12">4</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ctxDebug</span><span class="s7">.</span><span class="s1">strokeRect</span><span class="s7">(</span><span class="s1">boxX</span><span class="s7">,</span><span class="s1"> boxY</span><span class="s7">,</span><span class="s1"> boxW</span><span class="s7">,</span><span class="s1"> boxH</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">// Loop setiap soalan dan pilihan untuk periksa kegelapan piksel</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">for</span><span class="s1"> </span><span class="s7">(</span><span class="s9">let</span><span class="s1"> i </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span><span class="s1"> i </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s13">JUMLAH_SOALAN</span><span class="s7">;</span><span class="s1"> i</span><span class="s7">++)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> cy </span><span class="s7">=</span><span class="s1"> mulaY </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">i </span><span class="s7">*</span><span class="s1"> jarakBaris</span><span class="s7">)</span><span class="s1"> </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">jarakBaris </span><span class="s7">/</span><span class="s1"> </span><span class="s12">2</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> tahapKegelapan </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> pilihanPelajar </span><span class="s7">=</span><span class="s1"> </span><span class="s9">null</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">for</span><span class="s1"> </span><span class="s7">(</span><span class="s9">let</span><span class="s1"> j </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span><span class="s1"> j </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s13">PILIHAN</span><span class="s7">.</span><span class="s1">length</span><span class="s7">;</span><span class="s1"> j</span><span class="s7">++)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> cx </span><span class="s7">=</span><span class="s1"> posXPilihan</span><span class="s7">[</span><span class="s1">j</span><span class="s7">];</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Saiz kawasan pensampelan (sampling area)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> r </span><span class="s7">=</span><span class="s1"> boxW </span><span class="s7">*</span><span class="s1"> </span><span class="s12">0.02</span><span class="s7">;</span><span class="s1"> </span><span class="s11">// 2% lebar kotak</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Dapatkan data piksel dalam bulatan kecil di (cx, cy)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> imgData </span><span class="s7">=</span><span class="s1"> ctx</span><span class="s7">.</span><span class="s1">getImageData</span><span class="s7">(</span><span class="s1">cx </span><span class="s7">-</span><span class="s1"> r</span><span class="s7">,</span><span class="s1"> cy </span><span class="s7">-</span><span class="s1"> r</span><span class="s7">,</span><span class="s1"> r</span><span class="s7">*</span><span class="s12">2</span><span class="s7">,</span><span class="s1"> r</span><span class="s7">*</span><span class="s12">2</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> pixels </span><span class="s7">=</span><span class="s1"> imgData</span><span class="s7">.</span><span class="s1">data</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> totalBrightness </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Kira purata kecerahan (brightness)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">for</span><span class="s1"> </span><span class="s7">(</span><span class="s9">let</span><span class="s1"> p </span><span class="s7">=</span><span class="s1"> </span><span class="s12">0</span><span class="s7">;</span><span class="s1"> p </span><span class="s7">&lt;</span><span class="s1"> pixels</span><span class="s7">.</span><span class="s1">length</span><span class="s7">;</span><span class="s1"> p </span><span class="s7">+=</span><span class="s1"> </span><span class="s12">4</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s9">let</span><span class="s1"> red </span><span class="s7">=</span><span class="s1"> pixels</span><span class="s7">[</span><span class="s1">p</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s9">let</span><span class="s1"> green </span><span class="s7">=</span><span class="s1"> pixels</span><span class="s7">[</span><span class="s1">p</span><span class="s7">+</span><span class="s12">1</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s9">let</span><span class="s1"> blue </span><span class="s7">=</span><span class="s1"> pixels</span><span class="s7">[</span><span class="s1">p</span><span class="s7">+</span><span class="s12">2</span><span class="s7">];</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                        </span></span><span class="s1">// Formula luminan standard</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s9">let</span><span class="s1"> brightness </span><span class="s7">=</span><span class="s1"> </span><span class="s7">(</span><span class="s12">0.299</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> red </span><span class="s7">+</span><span class="s1"> </span><span class="s12">0.587</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> green </span><span class="s7">+</span><span class="s1"> </span><span class="s12">0.114</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> blue</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>totalBrightness </span><span class="s7">+=</span><span class="s1"> brightness</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> avgBrightness </span><span class="s7">=</span><span class="s1"> totalBrightness </span><span class="s7">/</span><span class="s1"> </span><span class="s7">(</span><span class="s1">pixels</span><span class="s7">.</span><span class="s1">length </span><span class="s7">/</span><span class="s1"> </span><span class="s12">4</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>tahapKegelapan</span><span class="s7">.</span><span class="s1">push</span><span class="s7">(</span><span class="s1">avgBrightness</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Debug: Lukis titik ujian di canvas</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctxDebug</span><span class="s7">.</span><span class="s1">beginPath</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctxDebug</span><span class="s7">.</span><span class="s1">arc</span><span class="s7">(</span><span class="s1">cx</span><span class="s7">,</span><span class="s1"> cy</span><span class="s7">,</span><span class="s1"> r</span><span class="s7">,</span><span class="s1"> </span><span class="s12">0</span><span class="s7">,</span><span class="s1"> </span><span class="s12">2</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> </span><span class="s13">Math</span><span class="s7">.</span><span class="s13">PI</span><span class="s7">);</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Kalau gelap (nilai brightness rendah, let say &lt; 130), kaler hijau</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">avgBrightness </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s12">130</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctxDebug</span><span class="s7">.</span><span class="s1">fillStyle </span><span class="s7">=</span><span class="s1"> </span><span class="s14">"rgba(0, 255, 0, 0.5)"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span><span class="s1"> </span><span class="s9">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctxDebug</span><span class="s7">.</span><span class="s1">fillStyle </span><span class="s7">=</span><span class="s1"> </span><span class="s14">"rgba(255, 0, 0, 0.3)"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctxDebug</span><span class="s7">.</span><span class="s1">fill</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctxDebug</span><span class="s7">.</span><span class="s1">stroke</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// Cari bulatan yang paling gelap</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> nilaiPalingGelap </span><span class="s7">=</span><span class="s1"> </span><span class="s13">Math</span><span class="s7">.</span><span class="s1">min</span><span class="s7">(...</span><span class="s1">tahapKegelapan</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// Threshold: adakah ia cukup gelap untuk dikira sebagai "dihitamkan"?</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// Jika kurang dari 130 (0=hitam pekat, 255=putih bersih), kita anggap ditanda.</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">nilaiPalingGelap </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s12">130</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> indeksJawapan </span><span class="s7">=</span><span class="s1"> tahapKegelapan</span><span class="s7">.</span><span class="s1">indexOf</span><span class="s7">(</span><span class="s1">nilaiPalingGelap</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>pilihanPelajar </span><span class="s7">=</span><span class="s1"> </span><span class="s13">PILIHAN</span><span class="s7">[</span><span class="s1">indeksJawapan</span><span class="s7">];</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                    </span></span><span class="s1">// Semak jika ada lebih dari 1 bulatan yang dihitamkan (double mark)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">let</span><span class="s1"> countGelap </span><span class="s7">=</span><span class="s1"> tahapKegelapan</span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">b </span><span class="s7">=&gt;</span><span class="s1"> b </span><span class="s7">&lt;</span><span class="s1"> </span><span class="s12">130</span><span class="s7">).</span><span class="s1">length</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">countGelap </span><span class="s7">&gt;</span><span class="s1"> </span><span class="s12">1</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>pilihanPelajar </span><span class="s7">=</span><span class="s1"> </span><span class="s14">"BATAL"</span><span class="s7">;</span><span class="s1"> </span><span class="s11">// Tandakan sebagai batal</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// Semak betul atau salah</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> betul </span><span class="s7">=</span><span class="s1"> </span><span class="s9">false</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> jawapanSebenar </span><span class="s7">=</span><span class="s1"> skemaJawapan</span><span class="s7">[</span><span class="s1">i</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">pilihanPelajar </span><span class="s7">===</span><span class="s1"> jawapanSebenar</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>betul </span><span class="s7">=</span><span class="s1"> </span><span class="s9">true</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>markah</span><span class="s7">++;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>butiran</span><span class="s7">.</span><span class="s1">push</span><span class="s7">({</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>soalan</span><span class="s7">:</span><span class="s1"> i </span><span class="s7">+</span><span class="s1"> </span><span class="s12">1</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>jawapanPelajar</span><span class="s7">:</span><span class="s1"> pilihanPelajar </span><span class="s7">||</span><span class="s1"> </span><span class="s14">'KOSONG'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>jawapanSebenar</span><span class="s7">:</span><span class="s1"> jawapanSebenar</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>betul</span><span class="s7">:</span><span class="s1"> betul</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>paparKeputusan</span><span class="s7">(</span><span class="s1">markah</span><span class="s7">,</span><span class="s1"> butiran</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s9">function</span><span class="s1"> paparKeputusan</span><span class="s7">(</span><span class="s1">markah</span><span class="s7">,</span><span class="s1"> butiran</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span>tukarTab</span><span class="s7">(</span><span class="s14">'keputusan'</span><span class="s7">);</span><span class="s4"> </span><span class="s1">// Tukar ke tab hasil, ini akan tutup kamera automatik</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> peratus </span><span class="s7">=</span><span class="s1"> </span><span class="s7">(</span><span class="s1">markah </span><span class="s7">/</span><span class="s1"> </span><span class="s13">JUMLAH_SOALAN</span><span class="s7">)</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> </span><span class="s12">100</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'skor-markah'</span><span class="s7">).</span><span class="s1">innerText </span><span class="s7">=</span><span class="s1"> </span><span class="s14">`</span><span class="s7">${</span><span class="s1">markah</span><span class="s7">}</span><span class="s14">/</span><span class="s7">${</span><span class="s13">JUMLAH_SOALAN</span><span class="s7">}</span><span class="s14">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'skor-peratus'</span><span class="s7">).</span><span class="s1">innerText </span><span class="s7">=</span><span class="s1"> </span><span class="s14">`</span><span class="s7">${</span><span class="s1">peratus</span><span class="s7">.</span><span class="s1">toFixed</span><span class="s7">(</span><span class="s12">0</span><span class="s7">)}</span><span class="s14">%`</span><span class="s7">;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">let</span><span class="s1"> senaraiHtml </span><span class="s7">=</span><span class="s1"> butiran</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">b </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s1"> ikon </span><span class="s7">=</span><span class="s1"> b</span><span class="s7">.</span><span class="s1">betul </span><span class="s7">?</span><span class="s1"> </span><span class="s14">'✅'</span><span class="s1"> </span><span class="s7">:</span><span class="s1"> </span><span class="s14">'❌'</span><span class="s7">;</span></p>
-<p class="p8"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s9">let</span><span class="s4"> warnaTeks </span><span class="s7">=</span><span class="s4"> b</span><span class="s7">.</span><span class="s4">betul </span><span class="s7">?</span><span class="s4"> </span><span class="s1">'text-green-600 font-bold'</span><span class="s4"> </span><span class="s7">:</span><span class="s4"> </span><span class="s1">'text-red-600 font-bold'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s9">return</span><span class="s1"> </span><span class="s14">`</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex justify-between items-center p-2 bg-white rounded border"&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="w-16"&gt;No. </span><span class="s7">${</span><span class="s4">b</span><span class="s7">.</span><span class="s4">soalan</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex-1 text-center"&gt;Jawab: &lt;span class="</span><span class="s7">${</span><span class="s4">warnaTeks</span><span class="s7">}</span><span class="s1">"&gt;</span><span class="s7">${</span><span class="s4">b</span><span class="s7">.</span><span class="s4">jawapanPelajar</span><span class="s7">}</span><span class="s1">&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex-1 text-right text-gray-500"&gt;Skema: </span><span class="s7">${</span><span class="s4">b</span><span class="s7">.</span><span class="s4">jawapanSebenar</span><span class="s7">}</span><span class="s1"> </span><span class="s7">${</span><span class="s4">ikon</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}).</span><span class="s1">join</span><span class="s7">(</span><span class="s14">''</span><span class="s7">);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s14">'senarai-keputusan'</span><span class="s7">).</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> senaraiHtml</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p9"><span class="s15">&lt;/</span><span class="s10">html</span><span class="s15">&gt;</span></p>
+<body class="w-full h-screen overflow-hidden flex flex-col text-gray-800">
+
+    <!-- Modal Mesej Ralat -->
+    <div id="error-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-bold text-red-600 mb-2">Ralat</h3>
+            <p id="error-message" class="text-gray-700 mb-6 font-medium">Sesuatu tidak kena.</p>
+            <button onclick="closeError()" class="bg-gray-800 text-white px-6 py-2 rounded-md font-bold hover:bg-gray-700">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Skrin Pemuatan Global -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center">
+        <div class="loader mb-4"></div>
+        <p class="text-xl font-bold text-gray-600">Menyambung ke pelayan...</p>
+    </div>
+
+    <!-- 1. Skrin Utama (Log Masuk / Pilih Peranan) -->
+    <div id="screen-home" class="screen active flex-col items-center justify-center h-full kahoot-bg p-4">
+        <h1 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter text-center shadow-sm">KUIZ PINTAR</h1>
+        
+        <div class="bg-white p-6 rounded-md shadow-lg w-full max-w-sm text-center mb-6">
+            <input type="text" id="join-pin" placeholder="PIN Permainan" class="w-full p-3 mb-3 border-2 border-gray-300 rounded text-center text-xl font-bold text-gray-700 uppercase tracking-widest focus:border-blue-500 focus:outline-none" maxlength="6">
+            <input type="text" id="join-name" placeholder="Nama Panggilan" class="w-full p-3 mb-4 border-2 border-gray-300 rounded text-center font-bold text-gray-700 focus:border-blue-500 focus:outline-none" maxlength="15">
+            <button id="btn-join" class="w-full bg-gray-800 text-white py-3 rounded font-bold text-lg hover:bg-black transition-colors">Masuk</button>
+        </div>
+        
+        <p class="text-white mb-4 font-bold">ATAU</p>
+        
+        <button id="btn-host-start" class="bg-white text-purple-900 px-8 py-3 rounded font-bold text-lg hover:bg-gray-100 transition-colors shadow-md">Anjur Permainan (Host)</button>
+    </div>
+
+    <!-- 2. Skrin Host: Muat Naik Gambar -->
+    <div id="screen-host-setup" class="screen flex-col h-full bg-gray-100 p-6 overflow-y-auto items-center">
+        <div class="max-w-2xl w-full bg-white rounded-lg shadow-md p-8 mt-10">
+            <h2 class="text-3xl font-black mb-6 text-center text-purple-900">Bina Soalan Dari Gambar</h2>
+            <p class="text-center text-gray-600 mb-6 font-medium">Muat naik gambar, dan AI akan menganalisisnya untuk membina soalan kuiz berserta 4 pilihan jawapan.</p>
+            
+            <div class="border-4 border-dashed border-gray-300 rounded-lg p-10 text-center mb-6 relative hover:bg-gray-50 transition-colors cursor-pointer" onclick="document.getElementById('image-upload').click()">
+                <input type="file" id="image-upload" accept="image/*" class="hidden">
+                <div id="upload-placeholder">
+                    <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <p class="font-bold text-gray-500">Klik untuk pilih gambar</p>
+                </div>
+                <img id="image-preview" class="hidden max-h-64 mx-auto rounded" src="" alt="Preview">
+            </div>
+
+            <button id="btn-generate-q" class="w-full bg-purple-700 text-white py-4 rounded-md font-bold text-xl hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed hidden flex items-center justify-center">
+                <span id="generate-text">Jana Soalan Pintar</span>
+                <div id="generate-loader" class="loader ml-3 hidden border-t-white w-6 h-6 border-4"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. Skrin Lobi (Host & Pemain) -->
+    <div id="screen-lobby" class="screen flex-col h-full bg-gray-100">
+        <!-- Header Host -->
+        <div id="lobby-host-header" class="bg-white p-6 shadow-md text-center hidden flex-col items-center">
+            <h2 class="text-xl text-gray-500 font-bold mb-1">Imbas QR atau layari <span id="join-url-display" class="text-blue-600 font-black">laman ini</span></h2>
+            <div class="text-6xl font-black text-gray-800 tracking-widest mb-4 mt-2" id="display-pin">------</div>
+            <div id="qrcode" class="mb-6 p-2 bg-white border-4 border-gray-100 rounded-lg shadow-sm"></div>
+            <button id="btn-start-game" class="bg-blue-600 text-white px-10 py-3 rounded-md font-bold text-xl hover:bg-blue-700 shadow-md">Mula Kuiz</button>
+        </div>
+        <!-- Header Pemain -->
+        <div id="lobby-player-header" class="kahoot-bg p-6 text-center text-white hidden flex-1 flex flex-col items-center justify-center">
+            <h2 class="text-3xl font-black mb-4">Anda dah masuk!</h2>
+            <p class="text-xl font-bold" id="player-nickname-display">Pemain</p>
+            <p class="mt-8 text-lg opacity-80 animate-pulse">Menunggu penganjur bermula...</p>
+        </div>
+
+        <div id="lobby-players-container" class="flex-1 p-6 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-600 text-lg">Pemain Bersedia: <span id="player-count">0</span></h3>
+            </div>
+            <div id="players-list" class="flex flex-wrap gap-3">
+                <!-- Pemain akan disenaraikan di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Skrin Host: Papar Soalan -->
+    <div id="screen-host-question" class="screen flex-col h-full bg-gray-100">
+        <div class="bg-white p-4 shadow-sm text-center flex justify-between items-center">
+            <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center text-2xl font-black text-purple-800" id="host-timer">20</div>
+            <h2 class="text-2xl md:text-3xl font-bold flex-1 px-4" id="host-question-text">Memuatkan Soalan...</h2>
+            <div class="w-16"></div> <!-- Spacer -->
+        </div>
+        
+        <div class="flex-1 p-4 flex flex-col items-center justify-center min-h-[40vh]">
+            <img id="host-question-image" src="" class="max-w-full max-h-[40vh] object-contain rounded-lg shadow-md mb-6 hidden" alt="Soalan Imej">
+        </div>
+
+        <div class="grid grid-cols-2 grid-rows-2 gap-2 p-2 h-[40vh] min-h-[250px]">
+            <div class="color-red rounded flex items-center p-4 relative shadow-md">
+                <div class="shape-triangle absolute left-4"></div>
+                <span class="ml-16 text-white font-bold text-xl lg:text-2xl" id="host-opt-0">Pilihan A</span>
+            </div>
+            <div class="color-blue rounded flex items-center p-4 relative shadow-md">
+                <div class="shape-diamond absolute left-4"></div>
+                <span class="ml-16 text-white font-bold text-xl lg:text-2xl" id="host-opt-1">Pilihan B</span>
+            </div>
+            <div class="color-yellow rounded flex items-center p-4 relative shadow-md">
+                <div class="shape-circle absolute left-4"></div>
+                <span class="ml-16 text-white font-bold text-xl lg:text-2xl" id="host-opt-2">Pilihan C</span>
+            </div>
+            <div class="color-green rounded flex items-center p-4 relative shadow-md">
+                <div class="shape-square absolute left-4"></div>
+                <span class="ml-16 text-white font-bold text-xl lg:text-2xl" id="host-opt-3">Pilihan D</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Skrin Pemain: Butang Jawapan -->
+    <div id="screen-player-answer" class="screen flex-col h-full bg-gray-100">
+        <div class="bg-white p-4 text-center shadow-sm">
+            <h2 class="font-bold text-gray-500">Masa Tinggal</h2>
+            <div class="text-3xl font-black" id="player-timer">20</div>
+        </div>
+        <div id="player-buttons-container" class="flex-1 grid grid-cols-2 grid-rows-2 gap-2 p-2">
+            <button onclick="submitAnswer(0)" class="color-red rounded answer-btn flex items-center justify-center shadow-md text-white disabled:opacity-50 disabled:transform-none disabled:border-b-4"><div class="shape-triangle"></div></button>
+            <button onclick="submitAnswer(1)" class="color-blue rounded answer-btn flex items-center justify-center shadow-md text-white disabled:opacity-50 disabled:transform-none disabled:border-b-4"><div class="shape-diamond"></div></button>
+            <button onclick="submitAnswer(2)" class="color-yellow rounded answer-btn flex items-center justify-center shadow-md text-white disabled:opacity-50 disabled:transform-none disabled:border-b-4"><div class="shape-circle"></div></button>
+            <button onclick="submitAnswer(3)" class="color-green rounded answer-btn flex items-center justify-center shadow-md text-white disabled:opacity-50 disabled:transform-none disabled:border-b-4"><div class="shape-square"></div></button>
+        </div>
+        <div id="player-waiting-result" class="hidden flex-1 flex-col items-center justify-center bg-gray-200">
+            <div class="loader mb-4 border-t-gray-600"></div>
+            <p class="font-bold text-xl text-gray-600">Menunggu keputusan...</p>
+        </div>
+    </div>
+
+    <!-- 6. Skrin Keputusan & Papan Pendahulu -->
+    <div id="screen-leaderboard" class="screen flex-col h-full bg-purple-900 text-white p-6">
+        <div id="result-feedback" class="text-center mb-8 hidden">
+            <h2 class="text-5xl font-black mb-2" id="result-title">Betul!</h2>
+            <p class="text-xl font-bold" id="result-score-change">+1000 markah</p>
+            <p class="text-lg mt-4 font-bold bg-black/20 inline-block px-4 py-2 rounded-full">Markah Terkini: <span id="result-total-score">0</span></p>
+        </div>
+
+        <h2 class="text-4xl font-black text-center mb-8 text-yellow-400 drop-shadow-md">Papan Pendahulu</h2>
+        <div class="max-w-xl w-full mx-auto bg-white/10 rounded-lg p-2" id="leaderboard-list">
+            <!-- Kedudukan pemain -->
+        </div>
+
+        <div id="host-leaderboard-controls" class="hidden mt-auto text-center pt-8">
+            <button id="btn-next-question" class="bg-blue-600 text-white px-8 py-3 rounded-md font-bold text-xl hover:bg-blue-700 shadow-lg mb-4 w-full max-w-sm">Jana Soalan Seterusnya</button>
+            <button onclick="resetApp()" class="text-gray-300 font-bold hover:text-white block w-full">Tamat Permainan</button>
+        </div>
+        <div id="player-leaderboard-controls" class="hidden mt-auto text-center pt-8">
+            <p class="animate-pulse font-bold text-lg opacity-80">Menunggu penganjur...</p>
+        </div>
+    </div>
+
+    <!-- Firebase & Logik App -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Gemini
+        const apiKey = ""; 
+        const geminiModel = "gemini-2.5-flash-preview-09-2025";
+        
+        // Konfigurasi Firebase (Mematuhi Peraturan Persekitaran)
+        let firebaseConfig;
+        try {
+            firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        } catch (e) {
+            console.error("Firebase config tiada.");
+        }
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kahoot-clone-123';
+        const dbGamesPath = 'artifacts/' + appId + '/public/data/kahoot_games';
+        const dbPlayersPath = 'artifacts/' + appId + '/public/data/kahoot_players';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // State Aplikasi
+        let currentUser = null;
+        let gamePin = "";
+        let isHost = false;
+        let base64ImageObj = null; // Menyimpan imej yang dimuat naik (base64)
+        let currentQuestionData = null;
+        let intervalTimer = null;
+        let timeLeft = 20;
+        
+        // Listeners
+        let gameListenerUnsub = null;
+        let playersListenerUnsub = null;
+
+        // --- Fungsi Bantuan ---
+        window.showScreen = (screenId) => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        };
+
+        window.showError = (msg) => {
+            document.getElementById('error-message').textContent = msg;
+            document.getElementById('error-modal').classList.remove('hidden');
+            document.getElementById('error-modal').classList.add('flex');
+        };
+
+        window.closeError = () => {
+            document.getElementById('error-modal').classList.add('hidden');
+            document.getElementById('error-modal').classList.remove('flex');
+        };
+
+        window.resetApp = () => {
+            if(gameListenerUnsub) gameListenerUnsub();
+            if(playersListenerUnsub) playersListenerUnsub();
+            if(intervalTimer) clearInterval(intervalTimer);
+            gamePin = "";
+            isHost = false;
+            base64ImageObj = null;
+            showScreen('screen-home');
+        };
+
+        // --- Inisialisasi Auth ---
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth ralat:", err);
+                document.getElementById('loading-screen').classList.add('hidden');
+                showError("Gagal menyambung. Sila muat semula halaman.");
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }
+        });
+
+        // --- Logik Penganjur (Host) ---
+        document.getElementById('btn-host-start').addEventListener('click', () => {
+            if (!currentUser) return;
+            isHost = true;
+            showScreen('screen-host-setup');
+        });
+
+        // Muat Naik Imej
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                base64ImageObj = {
+                    mimeType: file.type,
+                    data: base64String.split(',')[1] // Buang data:image/png;base64,
+                };
+                
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                const imgPreview = document.getElementById('image-preview');
+                imgPreview.src = base64String;
+                imgPreview.classList.remove('hidden');
+                
+                document.getElementById('btn-generate-q').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Panggil Gemini API untuk Jana Soalan
+        document.getElementById('btn-generate-q').addEventListener('click', async () => {
+            if (!base64ImageObj) return;
+
+            const btn = document.getElementById('btn-generate-q');
+            const text = document.getElementById('generate-text');
+            const loader = document.getElementById('generate-loader');
+            
+            btn.disabled = true;
+            text.textContent = "Menganalisis Imej...";
+            loader.classList.remove('hidden');
+
+            try {
+                const prompt = "Anda ialah pembantu kuiz yang bijak. Analisis imej yang diberikan. Bina SATU soalan trivia menarik berdasarkan imej ini. Berikan 4 pilihan jawapan yang ringkas, dan tentukan indeks jawapan yang betul (0 hingga 3). Kembalikan maklumat dalam format JSON murni sahaja (tiada markdown) dengan struktur: {\"question\": \"...\", \"options\": [\"...\", \"...\", \"...\", \"...\"], \"answerIndex\": 0}. Sila tulis dalam Bahasa Melayu.";
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                { inlineData: { mimeType: base64ImageObj.mimeType, data: base64ImageObj.data } }
+                            ]
+                        }],
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "OBJECT",
+                                properties: {
+                                    question: { type: "STRING" },
+                                    options: { type: "ARRAY", items: { type: "STRING" } },
+                                    answerIndex: { type: "INTEGER" }
+                                }
+                            }
+                        }
+                    })
+                });
+
+                const result = await response.json();
+                if (result.error) throw new Error(result.error.message);
+
+                const generatedText = result.candidates[0].content.parts[0].text;
+                currentQuestionData = JSON.parse(generatedText);
+
+                // Cipta permainan dalam Firestore
+                await createGameSession();
+
+            } catch (err) {
+                console.error("Ralat Gemini:", err);
+                showError("Gagal menjana soalan dari imej. Sila cuba lagi.");
+                btn.disabled = false;
+                text.textContent = "Jana Soalan Pintar";
+                loader.classList.add('hidden');
+            }
+        });
+
+        const createGameSession = async () => {
+            gamePin = Math.floor(100000 + Math.random() * 900000).toString(); // PIN 6 digit
+            
+            try {
+                await setDoc(doc(db, dbGamesPath, gamePin), {
+                    hostId: currentUser.uid,
+                    status: 'lobby',
+                    questionInfo: currentQuestionData,
+                    createdAt: Date.now()
+                });
+
+                setupHostListeners();
+                
+                // Kemaskini UI Lobi
+                document.getElementById('display-pin').textContent = gamePin;
+                
+                // Jana QR Code
+                const qrContainer = document.getElementById('qrcode');
+                qrContainer.innerHTML = '';
+                const joinUrl = window.location.href.split('?')[0]; 
+                
+                // Set URL display (singkatkan sikit kalau panjang sangat)
+                let displayUrl = joinUrl;
+                if(displayUrl.length > 40) displayUrl = displayUrl.substring(0, 40) + '...';
+                document.getElementById('join-url-display').textContent = displayUrl;
+
+                new QRCode(qrContainer, {
+                    text: joinUrl,
+                    width: 180,
+                    height: 180,
+                    colorDark : "#46178f",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.L
+                });
+
+                document.getElementById('lobby-host-header').classList.remove('hidden');
+                document.getElementById('lobby-host-header').classList.add('flex');
+                document.getElementById('lobby-player-header').classList.add('hidden');
+                showScreen('screen-lobby');
+
+            } catch (err) {
+                console.error("Ralat bina permainan:", err);
+                showError("Gagal membina bilik permainan.");
+            }
+        };
+
+        const setupHostListeners = () => {
+            // Dengar perubahan status permainan
+            gameListenerUnsub = onSnapshot(doc(db, dbGamesPath, gamePin), (snapshot) => {
+                if (!snapshot.exists()) {
+                    showError("Permainan telah ditutup.");
+                    resetApp();
+                    return;
+                }
+            }, (err) => { console.error(err); });
+
+            // Dengar pemain masuk (Ambil semua dan tapis - Aturan #2)
+            playersListenerUnsub = onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
+                const players = snapshot.docs.map(d => d.data()).filter(p => p.pin === gamePin);
+                updatePlayersList(players);
+            }, (err) => { console.error(err); });
+        };
+
+        const updatePlayersList = (players) => {
+            document.getElementById('player-count').textContent = players.length;
+            const container = document.getElementById('players-list');
+            container.innerHTML = '';
+            
+            players.forEach(p => {
+                const el = document.createElement('div');
+                el.className = 'bg-white font-bold text-gray-800 px-4 py-2 rounded shadow-sm text-lg';
+                el.textContent = p.name;
+                container.appendChild(el);
+            });
+        };
+
+        // Host mulakan permainan
+        document.getElementById('btn-start-game').addEventListener('click', async () => {
+            try {
+                await updateDoc(doc(db, dbGamesPath, gamePin), {
+                    status: 'playing',
+                    startedAt: Date.now()
+                });
+                startHostQuestionScreen();
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        const startHostQuestionScreen = () => {
+            showScreen('screen-host-question');
+            
+            // Paparkan data soalan
+            document.getElementById('host-question-text').textContent = currentQuestionData.question;
+            const imgEl = document.getElementById('host-question-image');
+            imgEl.src = `data:${base64ImageObj.mimeType};base64,${base64ImageObj.data}`;
+            imgEl.classList.remove('hidden');
+
+            document.getElementById('host-opt-0').textContent = currentQuestionData.options[0];
+            document.getElementById('host-opt-1').textContent = currentQuestionData.options[1];
+            document.getElementById('host-opt-2').textContent = currentQuestionData.options[2];
+            document.getElementById('host-opt-3').textContent = currentQuestionData.options[3];
+
+            // Mulakan pemasa Host
+            timeLeft = 20;
+            document.getElementById('host-timer').textContent = timeLeft;
+            if(intervalTimer) clearInterval(intervalTimer);
+            
+            intervalTimer = setInterval(async () => {
+                timeLeft--;
+                document.getElementById('host-timer').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(intervalTimer);
+                    await finishQuestionAsHost();
+                }
+            }, 1000);
+        };
+
+        const finishQuestionAsHost = async () => {
+            try {
+                await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'leaderboard' });
+                showLeaderboardAsHost();
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        const showLeaderboardAsHost = async () => {
+            showScreen('screen-leaderboard');
+            document.getElementById('host-leaderboard-controls').classList.remove('hidden');
+            document.getElementById('player-leaderboard-controls').classList.add('hidden');
+            document.getElementById('result-feedback').classList.add('hidden');
+            
+            // Susun pemain ikut markah
+            const snap = await getDoc(doc(db, dbGamesPath, gamePin)); // Pastikan permainan wujud
+            if(snap.exists()){
+                 onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
+                    const players = snapshot.docs
+                        .map(d => d.data())
+                        .filter(p => p.pin === gamePin)
+                        .sort((a,b) => b.score - a.score);
+                    
+                    renderLeaderboardList(players);
+                }, (err) => { console.error(err); });
+            }
+        };
+
+        // Host tekan Seterusnya -> Kembali ke muat naik
+        document.getElementById('btn-next-question').addEventListener('click', async () => {
+            // Reset state
+            base64ImageObj = null;
+            document.getElementById('image-upload').value = '';
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('image-preview').classList.add('hidden');
+            
+            const btn = document.getElementById('btn-generate-q');
+            btn.disabled = false;
+            btn.classList.add('hidden');
+            document.getElementById('generate-text').textContent = "Jana Soalan Pintar";
+            document.getElementById('generate-loader').classList.add('hidden');
+
+            try {
+                // Update status kepada lobby setup
+                await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'lobby' });
+                
+                // Reset jawapan pemain
+                const snapshot = await getDocsDirectly(); // Guna fetch manual ganti query
+                const updates = snapshot.docs.filter(d => d.data().pin === gamePin).map(d => 
+                    updateDoc(doc(db, dbPlayersPath, d.id), { answeredAt: null, lastAnswerCorrect: null, lastScoreGained: 0 })
+                );
+                await Promise.all(updates);
+                
+                showScreen('screen-host-setup');
+
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        // Bantuan ambil semua pemain (sebab tak guna query complex)
+        const getDocsDirectly = () => {
+            return new Promise((resolve, reject) => {
+                const unsub = onSnapshot(collection(db, dbPlayersPath), (snap) => {
+                    unsub();
+                    resolve(snap);
+                }, reject);
+            });
+        }
+
+
+        // --- Logik Pemain (Player) ---
+        document.getElementById('btn-join').addEventListener('click', async () => {
+            if (!currentUser) return;
+            const pinInput = document.getElementById('join-pin').value.trim();
+            const nameInput = document.getElementById('join-name').value.trim() || "Pemain" + Math.floor(Math.random()*1000);
+
+            if (pinInput.length !== 6) {
+                showError("Sila masukkan 6 digit PIN yang sah.");
+                return;
+            }
+
+            try {
+                // Semak jika game wujud
+                const gameSnap = await getDoc(doc(db, dbGamesPath, pinInput));
+                if (!gameSnap.exists()) {
+                    showError("PIN permainan tidak dijumpai.");
+                    return;
+                }
+
+                gamePin = pinInput;
+                isHost = false;
+
+                // Daftar pemain
+                await setDoc(doc(db, dbPlayersPath, currentUser.uid), {
+                    pin: gamePin,
+                    name: nameInput,
+                    score: 0,
+                    joinedAt: Date.now()
+                });
+
+                setupPlayerListeners();
+
+                // UI Lobi
+                document.getElementById('player-nickname-display').textContent = nameInput;
+                document.getElementById('lobby-host-header').classList.add('hidden');
+                document.getElementById('lobby-player-header').classList.remove('hidden');
+                showScreen('screen-lobby');
+
+            } catch (err) {
+                console.error("Ralat join:", err);
+                showError("Gagal menyertai permainan.");
+            }
+        });
+
+        const setupPlayerListeners = () => {
+            gameListenerUnsub = onSnapshot(doc(db, dbGamesPath, gamePin), (snapshot) => {
+                if (!snapshot.exists()) {
+                    showError("Penganjur telah menamatkan permainan.");
+                    resetApp();
+                    return;
+                }
+                const data = snapshot.data();
+                
+                if (data.status === 'playing') {
+                    currentQuestionData = data.questionInfo;
+                    startPlayerAnswerScreen();
+                } else if (data.status === 'leaderboard') {
+                    showLeaderboardAsPlayer();
+                } else if (data.status === 'lobby') {
+                    // Kembali ke lobi (menunggu soalan seterusnya)
+                    document.getElementById('player-nickname-display').textContent = "Bersedia untuk soalan seterusnya!";
+                    showScreen('screen-lobby');
+                }
+            }, (err) => { console.error(err); });
+        };
+
+        const startPlayerAnswerScreen = () => {
+            showScreen('screen-player-answer');
+            document.getElementById('player-buttons-container').classList.remove('hidden');
+            document.getElementById('player-waiting-result').classList.add('hidden');
+            
+            // Enable butang
+            document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = false);
+
+            timeLeft = 20;
+            document.getElementById('player-timer').textContent = timeLeft;
+            if(intervalTimer) clearInterval(intervalTimer);
+            
+            intervalTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('player-timer').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(intervalTimer);
+                    waitForResult();
+                }
+            }, 1000);
+        };
+
+        window.submitAnswer = async (index) => {
+            if (!currentUser || isHost) return;
+            
+            // Matikan butang
+            document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
+            
+            const isCorrect = (index === currentQuestionData.answerIndex);
+            
+            // Kira markah (Maks 1000, kurang sikit kalau lambat)
+            let scoreGained = 0;
+            if (isCorrect) {
+                scoreGained = Math.floor((timeLeft / 20) * 500) + 500; // Min 500, Max 1000
+            }
+
+            try {
+                // Ambil markah sedia ada dulu
+                const pSnap = await getDoc(doc(db, dbPlayersPath, currentUser.uid));
+                const currentScore = pSnap.exists() ? pSnap.data().score : 0;
+
+                await updateDoc(doc(db, dbPlayersPath, currentUser.uid), {
+                    answeredAt: Date.now(),
+                    lastAnswerCorrect: isCorrect,
+                    lastScoreGained: scoreGained,
+                    score: currentScore + scoreGained
+                });
+                
+                waitForResult();
+
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        const waitForResult = () => {
+            document.getElementById('player-buttons-container').classList.add('hidden');
+            document.getElementById('player-waiting-result').classList.remove('hidden');
+            document.getElementById('player-waiting-result').classList.add('flex');
+        };
+
+        const showLeaderboardAsPlayer = async () => {
+            showScreen('screen-leaderboard');
+            document.getElementById('host-leaderboard-controls').classList.add('hidden');
+            document.getElementById('player-leaderboard-controls').classList.remove('hidden');
+            
+            // Tunjuk status peribadi
+            const pSnap = await getDoc(doc(db, dbPlayersPath, currentUser.uid));
+            if (pSnap.exists()) {
+                const pData = pSnap.data();
+                const fb = document.getElementById('result-feedback');
+                fb.classList.remove('hidden');
+                
+                const title = document.getElementById('result-title');
+                const scoreChange = document.getElementById('result-score-change');
+                document.getElementById('result-total-score').textContent = pData.score;
+
+                if (pData.lastAnswerCorrect === true) {
+                    title.textContent = "Jawapan Betul! 🔥";
+                    title.className = "text-5xl font-black mb-2 text-green-400";
+                    scoreChange.textContent = `+${pData.lastScoreGained} markah`;
+                } else if (pData.lastAnswerCorrect === false) {
+                    title.textContent = "Salah! 😢";
+                    title.className = "text-5xl font-black mb-2 text-red-400";
+                    scoreChange.textContent = `+0 markah`;
+                } else {
+                    title.textContent = "Masa Tamat! ⏰";
+                    title.className = "text-5xl font-black mb-2 text-gray-400";
+                    scoreChange.textContent = `+0 markah`;
+                }
+            }
+
+            // Dengar Leaderboard
+            onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
+                const players = snapshot.docs
+                    .map(d => d.data())
+                    .filter(p => p.pin === gamePin)
+                    .sort((a,b) => b.score - a.score);
+                
+                renderLeaderboardList(players);
+            }, (err) => { console.error(err); });
+        };
+
+        const renderLeaderboardList = (players) => {
+            const container = document.getElementById('leaderboard-list');
+            container.innerHTML = '';
+            
+            // Paparkan Top 5
+            players.slice(0, 5).forEach((p, index) => {
+                const el = document.createElement('div');
+                let bgClass = "bg-white/20";
+                if (index === 0) bgClass = "bg-yellow-500 text-yellow-900 shadow-lg scale-105 my-3";
+                
+                el.className = `${bgClass} rounded px-4 py-3 mb-2 flex justify-between items-center font-bold text-lg`;
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.innerHTML = `<span class="opacity-70 mr-3">#${index+1}</span> ${p.name}`;
+                
+                const scoreDiv = document.createElement('div');
+                scoreDiv.textContent = p.score;
+                
+                el.appendChild(nameDiv);
+                el.appendChild(scoreDiv);
+                container.appendChild(el);
+            });
+        };
+
+        // Mulakan Auth bila skrip jalan
+        window.onload = () => {
+            initAuth();
+        };
+
+    </script>
 </body>
 </html>
