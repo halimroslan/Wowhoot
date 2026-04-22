@@ -161,6 +161,19 @@
             transform: rotate(-12deg) scale(1.1);
             color: #f59e0b;
         }
+
+        /* Spotlight Animations for Leaderboard */
+        @keyframes popSpotlight {
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: brightness(0.5); }
+            50% { opacity: 1; transform: scale(1.05) translateY(-5px); filter: brightness(1.5); box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
+        }
+        
+        @keyframes superSpotlight {
+            0% { opacity: 0; transform: scale(0.5) translateY(50px); filter: brightness(0); }
+            40% { opacity: 1; transform: scale(1.1) translateY(-10px); box-shadow: 0 0 60px #fde047, 0 0 100px #fef08a; z-index: 50; filter: brightness(1.5); }
+            100% { opacity: 1; transform: scale(1.02) translateY(0); box-shadow: 8px 8px 0px #1e293b, 0 0 30px #fde047; filter: brightness(1); }
+        }
     </style>
 </head>
 <body class="w-full h-screen overflow-hidden flex flex-col">
@@ -385,8 +398,9 @@
         </div>
         
         <div id="lobby-player-header" class="bg-emerald-400 border-b-8 border-slate-900 p-12 text-center text-slate-900 hidden flex-none flex-col items-center justify-center relative overflow-hidden">
-            <div class="w-24 h-24 bg-white border-4 border-slate-900 rounded-full flex items-center justify-center mb-6 shadow-[6px_6px_0_0_#1e293b] animate-bounce">
-                <svg class="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+            <div class="w-24 h-24 bg-white border-4 border-slate-900 rounded-full flex items-center justify-center mb-6 shadow-[6px_6px_0_0_#1e293b] animate-bounce overflow-hidden">
+                <img id="player-avatar-img" src="" class="w-full h-full object-cover bg-slate-100 hidden">
+                <svg id="player-avatar-fallback" class="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
             </div>
             <h2 class="text-5xl font-black mb-4 relative z-10 tracking-tight uppercase" style="-webkit-text-stroke: 2px white; text-shadow: 4px 4px 0px #1e293b;">Berjaya Masuk!</h2>
             <div class="bg-white border-4 border-slate-900 px-8 py-3 rounded-full mt-2 shadow-[4px_4px_0_0_#1e293b] transform rotate-2">
@@ -962,8 +976,8 @@
                 else { waitMsg.style.display = 'flex'; }
                 players.forEach(p => {
                     const el = document.createElement('div');
-                    el.className = 'bg-white border-4 border-slate-900 text-slate-900 font-black text-xl px-6 py-3 rounded-full shadow-[4px_4px_0_0_#1e293b] animate-pop uppercase transform hover:scale-110 transition-transform cursor-default';
-                    el.textContent = p.name;
+                    el.className = 'bg-white border-4 border-slate-900 text-slate-900 font-black text-xl px-4 py-2 rounded-full shadow-[4px_4px_0_0_#1e293b] animate-pop uppercase transform hover:scale-110 transition-transform cursor-default flex items-center gap-3';
+                    el.innerHTML = `<img src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${encodeURIComponent(p.name)}" class="w-10 h-10 bg-slate-100 rounded-full border-2 border-slate-900"> <span>${p.name}</span>`;
                     container.appendChild(el);
                 });
             }, (err) => { console.error(err); });
@@ -1011,9 +1025,12 @@
             } else {
                 btnNext.classList.remove('hidden');
             }
+            
+            let hasAnimated = false;
             onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
                 const players = snapshot.docs.map(d => d.data()).filter(p => p.pin === gamePin).sort((a,b) => b.score - a.score);
-                renderLeaderboardList(players);
+                renderLeaderboardList(players, !hasAnimated);
+                hasAnimated = true;
             });
         };
 
@@ -1048,6 +1065,12 @@
                 gamePin = pinInput; isHost = false;
                 await setDoc(doc(db, dbPlayersPath, currentUser.uid), { pin: gamePin, name: nameInput, score: 0, joinedAt: Date.now() });
                 setupPlayerListeners();
+                
+                document.getElementById('player-avatar-fallback').classList.add('hidden');
+                const avatarImg = document.getElementById('player-avatar-img');
+                avatarImg.src = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${encodeURIComponent(nameInput)}`;
+                avatarImg.classList.remove('hidden');
+                
                 document.getElementById('player-nickname-display').textContent = nameInput;
                 document.getElementById('lobby-host-header').classList.add('hidden');
                 document.getElementById('lobby-player-header').classList.remove('hidden');
@@ -1134,13 +1157,16 @@
                     scoreChange.textContent = `+0`; 
                 }
             }
+            
+            let hasAnimated = false;
             onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
                 const players = snapshot.docs.map(d => d.data()).filter(p => p.pin === gamePin).sort((a,b) => b.score - a.score);
-                renderLeaderboardList(players);
+                renderLeaderboardList(players, !hasAnimated);
+                hasAnimated = true;
             });
         };
 
-        const renderLeaderboardList = (players) => {
+        const renderLeaderboardList = (players, animate = false) => {
             const container = document.getElementById('leaderboard-list');
             container.innerHTML = '';
             players.slice(0, 5).forEach((p, index) => {
@@ -1148,8 +1174,35 @@
                 let bgClass = "bg-white border-4 border-slate-900 shadow-[6px_6px_0_0_#1e293b] text-slate-900";
                 let medal = index === 0 ? ' 👑' : index === 1 ? ' 🥈' : index === 2 ? ' 🥉' : '';
                 if (index === 0) bgClass = "bg-yellow-400 border-4 border-slate-900 shadow-[8px_8px_0_0_#1e293b] text-slate-900 scale-[1.02] my-4";
-                el.className = `${bgClass} p-5 rounded-[2rem] mb-4 flex justify-between items-center text-xl md:text-2xl font-black animate-pop uppercase`;
-                el.innerHTML = `<div><span class="opacity-50 mr-3 text-lg font-black">#${index+1}</span> ${p.name}${medal}</div><div>${p.score}</div>`;
+                
+                let animStyle = "";
+                if (animate) {
+                    let delay = 0;
+                    if (index === 2) delay = 0.5; // Spotlight ke-3
+                    else if (index === 1) delay = 1.5; // Spotlight ke-2
+                    else if (index === 0) delay = 3.0; // Spotlight Paling Gah (ke-1)
+                    else delay = 4.0; // Pemain ke-4 dan ke-5
+                    
+                    animStyle = `opacity: 0; animation: ${index === 0 ? 'superSpotlight' : 'popSpotlight'} 1s ${delay}s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;`;
+                }
+
+                el.className = `${bgClass} p-4 md:p-5 rounded-[2rem] mb-4 flex justify-between items-center text-xl md:text-2xl font-black uppercase relative`;
+                
+                if (!animate) {
+                    el.classList.add('animate-pop');
+                }
+                if (animStyle) {
+                    el.style.cssText = animStyle;
+                }
+
+                el.innerHTML = `
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <span class="opacity-50 text-base md:text-lg font-black w-6 md:w-8">#${index+1}</span>
+                        <img src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${encodeURIComponent(p.name)}" class="w-10 h-10 md:w-12 md:h-12 bg-slate-100 rounded-full border-2 border-slate-900">
+                        <span>${p.name}${medal}</span>
+                    </div>
+                    <div>${p.score}</div>
+                `;
                 container.appendChild(el);
             });
         };
