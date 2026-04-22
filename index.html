@@ -18,7 +18,7 @@
             padding: 0;
         }
 
-        /* Latar Belakang Playful Berlapis */
+        /* Latar Belakang Playful Berlapis (Inspirasi AlphaPod) */
         .bg-vibrant {
             background: linear-gradient(to bottom, #6366f1 0%, #6366f1 45%, #84cc16 45%, #84cc16 75%, #1e1b4b 75%, #1e1b4b 100%);
             min-height: 100vh;
@@ -29,7 +29,7 @@
             align-items: center;
         }
 
-        /* Gear & Elemen Mekanikal */
+        /* Gear & Elemen Mekanikal Animasi */
         .gear {
             position: absolute;
             fill: rgba(255, 255, 255, 0.2);
@@ -97,23 +97,25 @@
         }
         .tilt-h { display: inline-block; transform: rotate(-12deg); margin: 0 2px; color: #facc15; }
 
-        /* Dashboard Specific Styling */
+        /* Dashboard specific visuals */
         .dashboard-header {
             background: white;
-            border: 4px solid #1e1b4b;
-            box-shadow: 8px 8px 0px #facc15;
-            border-radius: 2rem;
+            border: 5px solid #1e1b4b;
+            box-shadow: 10px 10px 0px #facc15;
+            border-radius: 2.5rem;
+            z-index: 20;
         }
         .quiz-card {
             background: white;
             border: 3px solid #e2e8f0;
             box-shadow: 0 10px 0px #cbd5e1;
-            border-radius: 2rem;
-            transition: all 0.2s;
+            border-radius: 2.2rem;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
         }
         .quiz-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 0px #6366f1;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 0px #6366f1;
             border-color: #6366f1;
         }
 
@@ -135,39 +137,7 @@
             object-fit: contain;
         }
 
-        /* Butang Jawapan ABCD */
-        .answer-btn { 
-            border-radius: 1.25rem;
-            transition: all 0.1s;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-bottom-width: 6px;
-        }
-        .answer-btn:active:not(:disabled) { transform: translateY(4px); border-bottom-width: 0px !important; }
-        
-        .color-red { background-color: #f43f5e; border-color: #be123c; }
-        .color-blue { background-color: #3b82f6; border-color: #1d4ed8; }
-        .color-yellow { background-color: #fbbf24; border-color: #d97706; }
-        .color-green { background-color: #10b981; border-color: #047857; }
-
-        .answer-letter {
-            font-size: 3rem;
-            font-weight: 900;
-            color: white;
-            text-shadow: 0 4px 0 rgba(0,0,0,0.2);
-        }
-
-        /* Avatar Box */
-        .avatar-box {
-            background: white;
-            padding: 1rem;
-            border-radius: 2rem;
-            box-shadow: 0 8px 0 #cbd5e1;
-            animation: bounce 2s infinite ease-in-out;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
+        /* Screen Transitions */
         .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
         .screen.active { display: flex; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -195,25 +165,38 @@
         .modern-loader { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .podium-item { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
-        .podium-show { opacity: 1; transform: translateY(0); }
+        /* Steampunk Pod Illustration (Inspirasi AlphaPod) */
+        .steampunk-pod {
+            position: absolute;
+            width: 100px;
+            height: 120px;
+            z-index: 5;
+            animation: float-pod 6s infinite ease-in-out;
+        }
+        @keyframes float-pod { 0%, 100% { transform: translateY(0) rotate(5deg); } 50% { transform: translateY(-30px) rotate(-5deg); } }
+
+        .avatar-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 2rem;
+            box-shadow: 0 8px 0 #cbd5e1;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
 
-    <div class="bg-vibrant">
-        <!-- Dekoratif Bergerak Ringkas -->
+    <div class="bg-vibrant min-h-screen w-full flex flex-col items-center">
+        <!-- Dekoratif Bergerak Latar Belakang -->
         <div class="cloud w-24 h-8 top-10" style="animation-delay: 0s;"></div>
-        <div class="cloud w-32 h-10 top-32" style="animation-delay: -5s;"></div>
-        
-        <!-- Gear Berputar Latar Belakang -->
+        <div class="cloud w-40 h-12 top-60" style="animation-delay: -10s;"></div>
         <svg class="gear top-5 -left-10 w-24 h-24" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
-        <svg class="gear gear-reverse bottom-20 -right-10 w-32 h-32" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
 
         <!-- Loading Screen -->
         <div id="loading-screen" class="fixed inset-0 bg-indigo-900 z-[250] flex flex-col items-center justify-center transition-opacity duration-300">
             <div class="modern-loader mb-6"></div>
-            <p class="text-white font-black animate-pulse">MEMBINA Wowhoot!...</p>
+            <p class="text-white font-black animate-pulse">MENYEDIAKAN Wowhoot!...</p>
         </div>
 
         <!-- 1. Skrin Utama -->
@@ -250,110 +233,129 @@
             </div>
         </div>
 
-        <!-- 1.5 Dashboard -->
-        <div id="screen-host-dashboard" class="screen p-6 min-h-screen bg-slate-50 relative overflow-hidden">
-            <div class="max-w-4xl w-full z-10">
-                <div class="dashboard-header p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-l-8 border-l-indigo-600">
+        <!-- 1.5 Dashboard (MAINTAINING THE VIBE) -->
+        <div id="screen-host-dashboard" class="screen p-6 min-h-screen">
+            <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+                
+                <div class="dashboard-header p-6 md:p-8 mb-10 flex flex-col md:flex-row justify-between items-center gap-6 w-full relative">
+                    <!-- Mechanical Illustration on Header -->
+                    <div class="steampunk-pod -top-20 -right-10 hidden md:block">
+                        <svg width="80" height="100" viewBox="0 0 100 120">
+                            <ellipse cx="50" cy="60" rx="35" ry="45" fill="#facc15" stroke="#1e1b4b" stroke-width="4"/>
+                            <circle cx="50" cy="50" r="15" fill="#6366f1" stroke="#1e1b4b" stroke-width="3"/>
+                            <path d="M30 100 Q50 120 70 100" fill="none" stroke="#1e1b4b" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
                     <div class="text-center md:text-left">
-                        <h2 class="text-3xl font-black text-indigo-950 uppercase tracking-tight">Dashboard</h2>
-                        <p id="dashboard-email" class="text-indigo-400 font-bold text-xs lowercase opacity-70">hos</p>
+                        <h2 class="text-4xl font-black text-indigo-950 uppercase tracking-tighter">DASHBOARD</h2>
+                        <div class="flex items-center justify-center md:justify-start gap-2 mt-1">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <p id="dashboard-email" class="text-indigo-400 font-black text-xs lowercase">hos</p>
+                        </div>
                     </div>
                     <div class="flex gap-3">
-                        <button onclick="hostLogout()" class="px-5 py-2 bg-slate-100 text-slate-500 rounded-xl font-black text-xs hover:bg-rose-50 hover:text-rose-500 transition-colors">KELUAR</button>
-                        <button id="btn-new-quiz" class="px-6 py-2 bg-indigo-900 text-white rounded-xl font-black text-xs shadow-[0_4px_0_#4338ca] active:translate-y-1 active:shadow-none transition-all">+ BINA KUIZ</button>
+                        <button onclick="hostLogout()" class="px-6 py-3 bg-slate-100 text-slate-500 rounded-2xl font-black text-xs hover:bg-rose-50 hover:text-rose-500 transition-colors uppercase">Keluar</button>
+                        <button id="btn-new-quiz" class="px-8 py-3 bg-indigo-900 text-white rounded-2xl font-black text-sm shadow-[0_6px_0_#4338ca] active:translate-y-1 active:shadow-none transition-all uppercase">+ BINA KUIZ</button>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="h-1 flex-1 bg-slate-200"></div>
-                    <span class="text-slate-400 font-black text-[10px] uppercase tracking-[0.3em]">Arkib Kuiz Anda</span>
-                    <div class="h-1 flex-1 bg-slate-200"></div>
+                <div class="w-full flex items-center gap-4 mb-8">
+                    <div class="h-1 flex-1 bg-white/20"></div>
+                    <span class="text-white font-black text-xs uppercase tracking-[0.4em]">Koleksi Wowhoot Anda</span>
+                    <div class="h-1 flex-1 bg-white/20"></div>
                 </div>
 
-                <div id="quiz-history-loader" class="flex justify-center py-10"><div class="modern-loader !border-slate-200 !border-t-indigo-600"></div></div>
-                <div id="quiz-history-list" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full"></div>
+                <div id="quiz-history-loader" class="flex justify-center py-20"><div class="modern-loader"></div></div>
+                <div id="quiz-history-list" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full"></div>
             </div>
         </div>
 
-        <!-- SETUP SCREEN -->
-        <div id="screen-host-setup" class="screen p-6 min-h-screen bg-slate-50">
-            <div class="max-w-3xl w-full">
-                <button onclick="returnToDashboard()" class="text-indigo-900 font-black text-[10px] tracking-widest mb-4 uppercase flex items-center gap-2">
+        <!-- 2. Setup (BINA KUIZ) -->
+        <div id="screen-host-setup" class="screen p-6 min-h-screen">
+            <div class="max-w-3xl w-full z-20">
+                <button onclick="returnToDashboard()" class="text-white font-black text-[10px] tracking-widest mb-4 uppercase flex items-center gap-2">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/></svg>
-                    Kembali
+                    KEMBALI KE DASHBOARD
                 </button>
-                <div class="glass-card p-6 border-indigo-200 border-b-8 shadow-2xl">
-                    <h2 class="text-3xl font-black text-indigo-950 text-center mb-6 uppercase tracking-tighter">Bina Wowhoot!</h2>
+                <div class="glass-card p-6 md:p-10 border-indigo-200 border-b-8 shadow-2xl">
+                    <h2 class="text-3xl font-black text-indigo-950 text-center mb-8 uppercase tracking-tighter">BINA Wowhoot!</h2>
                     <input type="text" id="quiz-title-input" placeholder="TAJUK KUIZ" class="modern-input mb-6 border-2">
                     <div class="bg-indigo-50 p-6 rounded-3xl border-4 border-dashed border-indigo-200 text-center cursor-pointer mb-6" onclick="document.getElementById('image-upload').click()">
                         <input type="file" id="image-upload" accept="image/*" class="hidden">
-                        <div id="upload-placeholder" class="font-black text-indigo-900 text-xs uppercase">Muat Naik Gambar</div>
-                        <img id="image-preview" class="hidden max-h-40 mx-auto rounded-lg">
+                        <div id="upload-placeholder" class="font-black text-indigo-900 text-xs uppercase flex flex-col items-center">
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">⚙️</div>
+                            MUAT NAIK GAMBAR SOALAN
+                        </div>
+                        <img id="image-preview" class="hidden max-h-40 mx-auto rounded-lg shadow-xl">
                     </div>
-                    <div id="answer-selection" class="hidden flex gap-2 mb-6 bg-slate-100 p-4 rounded-2xl">
-                        <select id="correct-answer-select" class="flex-1 p-3 rounded-xl border-2 font-black uppercase text-xs">
-                            <option value="0">A (MERAH)</option><option value="1">B (BIRU)</option><option value="2">C (KUNING)</option><option value="3">D (HIJAU)</option>
-                        </select>
-                        <button id="btn-add-question" class="btn-wow bg-indigo-950 text-white px-6 py-3 uppercase text-xs">Tambah</button>
+                    <div id="answer-selection" class="hidden flex flex-col gap-3 mb-8 bg-slate-100 p-6 rounded-3xl border-2 border-slate-200">
+                        <label class="font-black text-indigo-950 text-[10px] uppercase">Pilih Jawapan Betul:</label>
+                        <div class="flex gap-2">
+                            <select id="correct-answer-select" class="flex-1 p-4 rounded-xl border-2 font-black uppercase text-xs outline-none focus:border-indigo-600">
+                                <option value="0">A (MERAH)</option><option value="1">B (BIRU)</option><option value="2">C (KUNING)</option><option value="3">D (HIJAU)</option>
+                            </select>
+                            <button id="btn-add-question" class="bg-indigo-950 text-white px-8 py-4 rounded-xl font-black uppercase text-xs shadow-[0_4px_0_#000] active:translate-y-1 active:shadow-none">TAMBAH</button>
+                        </div>
                     </div>
-                    <ul id="question-list-ui" class="space-y-2 mb-6 max-h-40 overflow-y-auto custom-scrollbar"></ul>
-                    <button id="btn-save-create-room" class="w-full btn-wow bg-lime-500 text-white py-5 text-xl hidden uppercase shadow-[0_6px_0_#4d7c0f]">Simpan & Mula</button>
+                    <ul id="question-list-ui" class="space-y-3 mb-8 max-h-48 overflow-y-auto custom-scrollbar"></ul>
+                    <button id="btn-save-create-room" class="w-full btn-wow bg-lime-500 text-white py-5 text-xl hidden uppercase shadow-[0_6px_0_#4d7c0f]">SIMPAN & MULA HOS</button>
                 </div>
             </div>
         </div>
 
-        <!-- LOBI SCREEN -->
-        <div id="screen-lobby" class="screen min-h-screen bg-slate-50">
+        <!-- 3. Lobi -->
+        <div id="screen-lobby" class="screen min-h-screen">
             <div id="lobby-host-header" class="w-full bg-white p-6 shadow-xl flex flex-col items-center text-center hidden border-b-8 border-indigo-900">
                 <h2 class="text-slate-400 font-black text-[10px] tracking-widest uppercase mb-2">Wowhoot PIN</h2>
                 <div id="display-pin" class="text-7xl md:text-9xl font-black text-indigo-900 mb-6 tracking-tight drop-shadow-sm">------</div>
                 <div class="flex gap-4 items-center bg-slate-50 p-4 rounded-2xl border-2 border-slate-100">
                     <div id="qrcode" class="p-1 bg-white rounded-lg"></div>
-                    <div class="text-left"><p class="text-[8px] font-black uppercase text-slate-400">Pautan</p><p id="join-url-display" class="text-indigo-600 font-black text-xs"></p></div>
+                    <div class="text-left"><p class="text-[8px] font-black uppercase text-slate-400">Pautan Pantas</p><p id="join-url-display" class="text-indigo-600 font-black text-xs"></p></div>
                 </div>
                 <div class="flex gap-4 mt-8">
                     <button onclick="returnToDashboardFromLobby()" class="px-6 py-3 bg-slate-100 text-slate-500 rounded-xl font-black text-xs uppercase">Batal</button>
-                    <button id="btn-start-game" class="btn-wow bg-indigo-900 text-white px-12 py-3 text-xl uppercase shadow-[0_6px_0_#000]">MULA!</button>
+                    <button id="btn-start-game-lobby" class="btn-wow bg-indigo-900 text-white px-12 py-3 text-xl uppercase shadow-[0_6px_0_#000]">MULA!</button>
                 </div>
             </div>
             <div id="lobby-player-header" class="w-full bg-indigo-600 p-8 text-center text-white hidden flex-col items-center border-b-8 border-indigo-900">
                 <div class="avatar-box text-5xl mb-4" id="player-avatar">🤖</div>
-                <h2 class="text-xl font-black uppercase tracking-widest">MASUK!</h2>
+                <h2 class="text-xl font-black uppercase tracking-widest">SIAP SEDIA!</h2>
                 <p id="player-nickname-display" class="mt-1 font-black text-yellow-300 uppercase"></p>
             </div>
             <div class="p-6 w-full max-w-5xl">
-                <h3 class="font-black text-indigo-900 uppercase tracking-widest text-xs mb-6">Peserta (<span id="player-count">0</span>)</h3>
+                <h3 class="font-black text-white uppercase tracking-widest text-xs mb-6">Peserta Menunggu...</h3>
                 <div id="players-list" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4"></div>
             </div>
         </div>
 
-        <!-- Gameplay Screens -->
+        <!-- Gameplay Screens... -->
         <div id="screen-host-question" class="screen h-screen bg-white">
-            <div class="w-full p-4 border-b-2 flex justify-between items-center bg-white">
-                <div id="host-timer" class="w-12 h-12 rounded-xl bg-rose-500 text-white flex items-center justify-center text-xl font-black">20</div>
-                <h2 class="text-lg font-black text-indigo-900 uppercase tracking-widest">Wowhoot!</h2>
+            <div class="w-full p-4 border-b-4 flex justify-between items-center bg-white border-slate-100">
+                <div id="host-timer" class="w-14 h-14 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-2xl font-black shadow-lg">20</div>
+                <h2 class="text-lg font-black text-indigo-900 uppercase tracking-widest">LIHAT SKRIN</h2>
                 <div id="question-number-display" class="font-black text-slate-400 text-sm">1/5</div>
             </div>
             <div class="quiz-image-container flex-1">
                 <img id="host-question-image" src="">
             </div>
-            <div id="host-answers-grid" class="grid grid-cols-2 gap-3 p-3 h-[30vh] w-full bg-white">
-                <div class="color-red rounded-2xl flex items-center justify-center shadow-md border-b-4"><span class="answer-letter">A</span></div>
-                <div class="color-blue rounded-2xl flex items-center justify-center shadow-md border-b-4"><span class="answer-letter">B</span></div>
-                <div class="color-yellow rounded-2xl flex items-center justify-center shadow-md border-b-4"><span class="answer-letter">C</span></div>
-                <div class="color-green rounded-2xl flex items-center justify-center shadow-md border-b-4"><span class="answer-letter">D</span></div>
+            <div id="host-answers-grid" class="grid grid-cols-2 gap-4 p-4 h-[30vh] w-full bg-white">
+                <div class="color-red rounded-3xl flex items-center justify-center shadow-md border-b-8 border-rose-800"><span class="answer-letter">A</span></div>
+                <div class="color-blue rounded-3xl flex items-center justify-center shadow-md border-b-8 border-blue-800"><span class="answer-letter">B</span></div>
+                <div class="color-yellow rounded-3xl flex items-center justify-center shadow-md border-b-8 border-amber-600"><span class="answer-letter">C</span></div>
+                <div class="color-green rounded-3xl flex items-center justify-center shadow-md border-b-8 border-emerald-800"><span class="answer-letter">D</span></div>
             </div>
         </div>
 
         <div id="screen-player-answer" class="screen h-screen">
             <div class="w-full bg-white p-3 flex justify-between items-center shadow-md">
                 <div id="player-timer" class="text-xl font-black text-indigo-900">20</div>
-                <div class="bg-emerald-500 text-white px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest">Aktif</div>
+                <div class="bg-emerald-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">AKTIF</div>
             </div>
             <div class="quiz-image-container flex-1 !max-h-[30vh]">
                 <img id="player-question-image" src="">
             </div>
-            <div id="player-buttons-grid" class="grid grid-cols-2 gap-3 p-3 h-[45vh] w-full bg-white">
+            <div id="player-buttons-grid" class="grid grid-cols-2 gap-4 p-4 h-[45vh] w-full bg-white">
                 <button onclick="submitAnswer(0)" class="color-red btn-wow"><span class="answer-letter">A</span></button>
                 <button onclick="submitAnswer(1)" class="color-blue btn-wow"><span class="answer-letter">B</span></button>
                 <button onclick="submitAnswer(2)" class="color-yellow btn-wow"><span class="answer-letter">C</span></button>
@@ -361,30 +363,29 @@
             </div>
             <div id="player-waiting-result" class="hidden flex-1 flex-col items-center justify-center bg-slate-50">
                 <div class="modern-loader !border-t-indigo-600 mb-6"></div>
-                <h3 class="font-black text-xl uppercase">Direkod!</h3>
+                <h3 class="font-black text-xl uppercase tracking-tighter">DIREKOD!</h3>
             </div>
         </div>
 
-        <!-- Leaderboard -->
         <div id="screen-leaderboard" class="screen p-6 overflow-y-auto">
             <div id="result-feedback" class="text-center mb-8 hidden">
-                <div class="glass-card p-6 inline-block">
-                    <h2 id="result-title" class="text-3xl font-black mb-2 uppercase">TEPAT!</h2>
-                    <div id="result-score-change" class="text-xl font-black text-indigo-600">+1000</div>
+                <div class="glass-card p-10 inline-block border-b-8 border-indigo-200">
+                    <h2 id="result-title" class="text-4xl font-black mb-4 uppercase">TEPAT!</h2>
+                    <div id="result-score-change" class="text-2xl font-black text-indigo-600">+1000</div>
                 </div>
             </div>
-            <h2 class="text-3xl font-black text-white text-center mb-8 uppercase tracking-widest drop-shadow-lg">Podium</h2>
+            <h2 class="text-3xl font-black text-white text-center mb-8 uppercase tracking-widest">KEDUDUKAN</h2>
             <div id="leaderboard-list" class="w-full max-w-xl mx-auto pb-20"></div>
             <div id="host-leaderboard-controls" class="hidden mt-4 w-full max-w-sm flex flex-col gap-3">
-                <button id="btn-next-question" class="btn-wow bg-yellow-400 text-indigo-900 py-4 text-xl uppercase shadow-[0_4px_0_#ca8a04]">Teruskan</button>
+                <button id="btn-next-question-lb" class="btn-wow bg-yellow-400 text-indigo-900 py-5 text-xl uppercase shadow-[0_6px_0_#ca8a04]">Teruskan</button>
                 <button onclick="returnToDashboardFromLobby()" class="px-6 py-2 bg-white/10 text-white/60 rounded-xl font-black text-[10px] uppercase">Tamatkan</button>
             </div>
         </div>
 
     </div>
 
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/60 z-[200] hidden flex items-center justify-center p-4">
+    <!-- Auth & Error Modals -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/60 z-[200] hidden items-center justify-center p-4">
         <div class="glass-card p-8 text-center max-w-md">
             <h2 class="text-2xl font-black text-indigo-950 mb-6 uppercase tracking-tight">Akaun Hos</h2>
             <input type="email" id="auth-email" placeholder="E-MEL" class="modern-input mb-3 border-2">
@@ -396,7 +397,6 @@
         </div>
     </div>
 
-    <!-- Error Modal -->
     <div id="error-modal" class="fixed inset-0 bg-black/60 z-[300] hidden items-center justify-center p-4">
         <div class="glass-card p-8 text-center max-w-xs">
             <div class="text-rose-500 mb-2 font-black uppercase">Oops!</div>
@@ -418,7 +418,7 @@
             messagingSenderId: "238792040544",
             appId: "1:238792040544:web:5bf70a5f722dd10c1b2305"
         };
-        const appId = 'wowhoot-v9-intl-ready';
+        const appId = 'wowhoot-v10-final-intl';
         const dbGamesPath = 'artifacts/' + appId + '/public/data/kahoot_games';
         const dbPlayersPath = 'artifacts/' + appId + '/public/data/kahoot_players';
 
@@ -458,16 +458,13 @@
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             const loader = safeGet('loading-screen');
-            if (user && loader) { 
-                loader.classList.add('opacity-0'); 
-                setTimeout(() => loader.classList.add('hidden'), 500); 
-            }
+            if (user && loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 500); }
         });
 
         const shuffleColors = (gridId) => {
             const grid = safeGet(gridId);
             if(!grid) return;
-            const classes = [{bg:'color-red', b:'border-rose-700'}, {bg:'color-blue', b:'border-blue-700'}, {bg:'color-yellow', b:'border-amber-600'}, {bg:'color-green', b:'border-emerald-700'}];
+            const classes = [{bg:'color-red', b:'border-rose-800'}, {bg:'color-blue', b:'border-blue-800'}, {bg:'color-yellow', b:'border-amber-600'}, {bg:'color-green', b:'border-emerald-800'}];
             classes.sort(() => Math.random() - 0.5);
             Array.from(grid.children).forEach((btn, i) => {
                 btn.className = btn.className.replace(/color-\w+|border-\w+-\d+/g, '').trim();
@@ -475,6 +472,7 @@
             });
         };
 
+        // --- BUTTON HANDLERS ---
         const handleAuthAction = async (isLogin) => {
             const e = safeGet('auth-email').value, p = safeGet('auth-pass').value;
             if(!e || p.length < 6) return showError("Data tidak sah.");
@@ -482,7 +480,7 @@
             try {
                 if(isLogin) await signInWithEmailAndPassword(auth, e, p); else await createUserWithEmailAndPassword(auth, e, p);
                 closeAuthModal(); loadDashboard();
-            } catch(err) { showError("Gagal."); } finally { safeGet('auth-loading').classList.add('hidden'); }
+            } catch(err) { showError("Ralat Pengesahan."); } finally { safeGet('auth-loading').classList.add('hidden'); }
         };
 
         window.loadDashboard = () => {
@@ -502,7 +500,7 @@
             });
         };
 
-        window.deleteQuiz = async (id) => { if(confirm("PADAM?")) await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', id)); };
+        window.deleteQuiz = async (id) => { if(confirm("PADAM KUIZ INI?")) await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', id)); };
         window.hostExistingQuiz = async (id) => {
             const s = await getDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', id));
             if(s.exists()) { hostQuestions = s.data().questions; isHost = true; createRoom(); }
@@ -536,7 +534,7 @@
                 safeGet('lobby-host-header').classList.add('flex');
                 safeGet('lobby-player-header').classList.add('hidden');
                 showScreen('screen-lobby');
-            } catch(e) { showError("GAGAL."); }
+            } catch(e) { showError("GAGAL MEMBUKA BILIK."); }
         };
 
         const setupHostListeners = () => {
@@ -641,6 +639,7 @@
             safeAdd('btn-login-submit', 'click', () => handleAuthAction(true));
             safeAdd('btn-register-submit', 'click', () => handleAuthAction(false));
             safeAdd('btn-new-quiz', 'click', () => { isHost = true; hostQuestions = []; updateQuestionList(); showScreen('screen-host-setup'); });
+            
             safeAdd('image-upload', 'change', (e) => {
                 if(!e.target.files[0]) return;
                 const r = new FileReader();
@@ -673,11 +672,11 @@
                 await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', "quiz_"+Date.now()), { title: safeGet('quiz-title-input').value.trim() || "KUIZ", questions: hostQuestions, createdAt: Date.now() });
                 await createRoom();
             });
-            safeAdd('btn-start-game', 'click', async () => {
+            safeAdd('btn-start-game-lobby', 'click', async () => {
                 await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'playing', startedAt: Date.now() });
                 startHostQuestion();
             });
-            safeAdd('btn-next-question', 'click', async () => {
+            safeAdd('btn-next-question-lb', 'click', async () => {
                 if (currentQuestionIndex < hostQuestions.length - 1) {
                     currentQuestionIndex++;
                     await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'playing', questionInfo: { image: hostQuestions[currentQuestionIndex].image, answerIndex: hostQuestions[currentQuestionIndex].answerIndex, totalQuestions: hostQuestions.length, currentIndex: currentQuestionIndex }, startedAt: Date.now() });
