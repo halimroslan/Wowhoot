@@ -234,10 +234,11 @@
 
         // --- KONFIGURASI GEMINI (PENTING UNTUK PUBLISH DI LUAR) ---
         let apiKey = "";
-        const geminiModel = "gemini-2.5-flash-preview-09-2025";
+        let geminiModel = "gemini-2.5-flash-preview-09-2025";
         if (typeof __firebase_config === 'undefined') {
             // Sila letakkan API Key Gemini anda di bawah jika publish di luar
             apiKey = "AIzaSyB65REVhHCjCUTXI_jFNzI2OQKOsExnr4k";
+            geminiModel = "gemini-1.5-flash";
         }
         
         // --- KONFIGURASI FIREBASE (PENTING UNTUK PUBLISH DI LUAR) ---
@@ -433,7 +434,7 @@
 
             } catch (err) {
                 console.error("Ralat Gemini:", err);
-                showError("Gagal menjana soalan dari imej. Sila cuba lagi.");
+                showError("Gagal jana soalan: " + err.message);
                 btn.disabled = false;
                 text.textContent = "Jana Soalan Pintar";
                 loader.classList.add('hidden');
