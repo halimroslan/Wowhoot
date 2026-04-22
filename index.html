@@ -3,152 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wowhoot! - by Sir Halim (Dengan Akaun)</title>
+    <title>Wowhoot! - Edisi Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap');
+        /* Font Poppins untuk gaya moden dan estetik */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            color: #1e293b;
         }
 
-        .premium-bg { background: linear-gradient(135deg, #46178f 0%, #2e0c63 100%); }
-        .color-red { background-color: #e21b3c; border-bottom: 6px solid #b81631; }
-        .color-blue { background-color: #1368ce; border-bottom: 6px solid #0f54a6; }
-        .color-yellow { background-color: #d89e00; border-bottom: 6px solid #b08100; }
-        .color-green { background-color: #26890c; border-bottom: 6px solid #1f6e0a; }
+        /* Kecerunan (Gradient) Premium */
+        .bg-premium { 
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); 
+        }
+        
+        .bg-premium-dark {
+            background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%); 
+        }
 
-        .answer-btn { transition: transform 0.1s, border-bottom-width 0.1s, margin-top 0.1s; }
-        .answer-btn:active { transform: translateY(6px); border-bottom-width: 0px; margin-bottom: 6px; }
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Butang Jawapan (A, B, C, D) 3D Moden */
+        .answer-btn { 
+            border-radius: 1.5rem;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .answer-btn:active:not(:disabled) { 
+            transform: translateY(6px); 
+            border-bottom-width: 0px !important;
+            margin-top: 6px;
+        }
+        .answer-btn:disabled {
+            opacity: 0.6;
+            transform: translateY(6px); 
+            border-bottom-width: 0px !important;
+            margin-top: 6px;
+            cursor: not-allowed;
+            filter: grayscale(40%);
+        }
+
+        /* Warna Butang Moden */
+        .color-red { background-color: #ef4444; border-bottom: 6px solid #b91c1c; }
+        .color-blue { background-color: #3b82f6; border-bottom: 6px solid #1d4ed8; }
+        .color-yellow { background-color: #f59e0b; border-bottom: 6px solid #b45309; }
+        .color-green { background-color: #10b981; border-bottom: 6px solid #047857; }
+
+        .color-red:hover:not(:disabled) { background-color: #f87171; }
+        .color-blue:hover:not(:disabled) { background-color: #60a5fa; }
+        .color-yellow:hover:not(:disabled) { background-color: #fbbf24; }
+        .color-green:hover:not(:disabled) { background-color: #34d399; }
 
         /* Huruf Jawapan Besar */
         .answer-letter {
             font-size: 5rem;
             font-weight: 900;
             color: white;
-            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.3));
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.2);
             line-height: 1;
         }
         @media (max-width: 768px) {
             .answer-letter { font-size: 4rem; }
         }
 
-        .screen { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .screen { display: none; opacity: 0; transition: opacity 0.4s ease-in-out; }
         .screen.active { display: flex; opacity: 1; }
 
-        .loader { border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 48px; height: 48px; animation: spin 1s linear infinite; }
-        .loader-dark { border-color: #e5e7eb; border-top-color: #46178f; }
-        .loader-small { width: 24px; height: 24px; border-width: 3px; }
+        /* Loader Estetik */
+        .modern-loader { 
+            width: 48px; height: 48px; 
+            border: 4px solid rgba(255, 255, 255, 0.2); 
+            border-top-color: #ffffff; 
+            border-radius: 50%; 
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+        }
+        .loader-indigo {
+            border-color: #e0e7ff;
+            border-top-color: #4f46e5;
+        }
         
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c084fc; border-radius: 4px; }
+        .animate-pop { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes popIn { 
+            0% { transform: scale(0.95) translateY(10px); opacity: 0; } 
+            100% { transform: scale(1) translateY(0); opacity: 1; } 
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Input Khas */
+        .modern-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            color: #1e293b;
+            font-weight: 600;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .modern-input:focus {
+            background-color: #ffffff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
     </style>
 </head>
-<body class="w-full h-screen overflow-hidden flex flex-col text-gray-800">
+<body class="w-full h-screen overflow-hidden flex flex-col">
 
     <!-- Modal Mesej Ralat -->
-    <div id="error-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-xl p-8 max-w-sm w-full text-center shadow-2xl animate-pop">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <div id="error-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm transition-all">
+        <div class="glass-card rounded-3xl p-8 max-w-sm w-full text-center animate-pop">
+            <div class="w-20 h-20 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <h3 class="text-2xl font-black text-gray-800 mb-2">Harap Maaf</h3>
-            <p id="error-message" class="text-gray-600 mb-8 font-medium leading-relaxed">Sesuatu tidak kena.</p>
-            <button onclick="closeError()" class="w-full bg-gray-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-800 transition-colors">Tutup</button>
+            <h3 class="text-2xl font-black text-slate-800 mb-2">Harap Maaf</h3>
+            <p id="error-message" class="text-slate-500 mb-8 font-medium leading-relaxed">Sesuatu tidak kena.</p>
+            <button onclick="closeError()" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold hover:bg-slate-700 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">Tutup</button>
         </div>
     </div>
 
     <!-- Modal Log Masuk / Daftar Akaun -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-pop relative">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
+        <div class="glass-card rounded-3xl p-8 max-w-md w-full animate-pop relative">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors bg-slate-100 rounded-full p-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <h2 class="text-3xl font-black text-center text-purple-900 mb-2">Akaun Hos</h2>
-            <p class="text-center text-gray-500 mb-6 font-medium text-sm">Bina, Simpan dan Hoskan Kuiz!</p>
             
-            <input type="email" id="auth-email" placeholder="Alamat E-mel" class="w-full p-4 mb-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 font-medium focus:border-purple-500 focus:bg-white focus:outline-none transition-colors">
-            <input type="password" id="auth-pass" placeholder="Kata Laluan (Minima 6 aksara)" class="w-full p-4 mb-6 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 font-medium focus:border-purple-500 focus:bg-white focus:outline-none transition-colors">
+            <div class="text-center mb-8 mt-2">
+                <h2 class="text-3xl font-black text-indigo-950 mb-2">Akaun Hos</h2>
+                <p class="text-slate-500 font-medium">Bina, Simpan dan Hoskan Kuiz!</p>
+            </div>
             
-            <div id="auth-loading" class="hidden justify-center mb-4">
-                <div class="loader loader-dark loader-small border-t-purple-600"></div>
+            <div class="space-y-4 mb-6">
+                <input type="email" id="auth-email" placeholder="Alamat E-mel" class="modern-input">
+                <input type="password" id="auth-pass" placeholder="Kata Laluan (Minima 6 aksara)" class="modern-input">
+            </div>
+            
+            <div id="auth-loading" class="hidden justify-center mb-6">
+                <div class="modern-loader loader-indigo"></div>
             </div>
 
-            <div class="flex flex-col gap-3">
-                <button id="btn-login-submit" class="w-full bg-purple-700 text-white py-4 rounded-xl font-bold text-lg hover:bg-purple-800 shadow-lg transform hover:-translate-y-1 transition-all">Log Masuk</button>
+            <div class="flex flex-col gap-4">
+                <button id="btn-login-submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 shadow-lg shadow-indigo-200 transform hover:-translate-y-1 transition-all duration-200">Log Masuk</button>
+                
                 <div class="relative flex items-center py-2">
-                    <div class="flex-grow border-t border-gray-200"></div>
-                    <span class="flex-shrink-0 mx-4 text-gray-400 text-sm font-bold">ATAU</span>
-                    <div class="flex-grow border-t border-gray-200"></div>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink-0 mx-4 text-slate-400 text-sm font-bold tracking-wider">ATAU</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
                 </div>
-                <button id="btn-register-submit" class="w-full bg-white border-2 border-purple-200 text-purple-700 py-4 rounded-xl font-bold text-lg hover:bg-purple-50 transition-all">Daftar Akaun Baru</button>
+                
+                <button id="btn-register-submit" class="w-full bg-white border-2 border-indigo-100 text-indigo-600 py-4 rounded-2xl font-bold text-lg hover:bg-indigo-50 hover:border-indigo-200 transition-all duration-200">Daftar Akaun Baru</button>
             </div>
         </div>
     </div>
 
     <!-- Skrin Pemuatan Global -->
-    <div id="loading-screen" class="fixed inset-0 premium-bg z-[60] flex flex-col items-center justify-center transition-opacity duration-300">
-        <div class="loader mb-6"></div>
-        <p class="text-xl font-bold text-white tracking-wide">Menyediakan Sistem...</p>
+    <div id="loading-screen" class="fixed inset-0 bg-premium z-[60] flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="modern-loader mb-6"></div>
+        <p class="text-xl font-bold text-white tracking-wide">Menyediakan Ruang...</p>
     </div>
 
     <!-- 1. Skrin Utama -->
-    <div id="screen-home" class="screen active flex-col items-center justify-center h-full premium-bg p-4 relative overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-400 opacity-10 rounded-full blur-3xl"></div>
+    <div id="screen-home" class="screen active flex-col items-center justify-center h-full bg-premium p-4 relative overflow-hidden">
+        <!-- Hiasan latar belakang estetik -->
+        <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse" style="animation-delay: 2s;"></div>
 
         <div class="z-10 w-full max-w-md flex flex-col items-center animate-pop">
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-2 tracking-tighter text-center drop-shadow-lg">Wowhoot!</h1>
-            <p class="text-purple-200 mb-10 font-medium text-center">by Sir Halim</p>
-            
-            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full text-center mb-6">
-                <input type="text" id="join-pin" placeholder="PIN Permainan" class="w-full p-4 mb-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-center text-2xl font-black text-gray-800 uppercase tracking-widest focus:border-purple-600 focus:bg-white focus:outline-none transition-colors" maxlength="6">
-                <input type="text" id="join-name" placeholder="Nama Panggilan" class="w-full p-4 mb-6 bg-gray-50 border-2 border-gray-200 rounded-xl text-center font-bold text-gray-800 text-lg focus:border-purple-600 focus:bg-white focus:outline-none transition-colors" maxlength="15">
-                <button id="btn-join" class="w-full bg-gray-900 text-white py-4 rounded-xl font-black text-xl hover:bg-black transform hover:scale-[1.02] transition-all shadow-lg">Masuk Permainan</button>
+            <div class="mb-10 text-center">
+                <h1 class="text-6xl md:text-7xl font-black text-white tracking-tight drop-shadow-lg mb-2">Wowhoot!</h1>
+                <span class="bg-white/20 text-white px-4 py-1.5 rounded-full text-sm font-bold tracking-widest backdrop-blur-sm border border-white/30">KUIZ INTERAKTIF</span>
             </div>
             
-            <div class="flex items-center w-full my-4">
-                <div class="flex-grow h-px bg-purple-400/30"></div>
-                <span class="px-4 text-purple-200 font-bold text-sm uppercase tracking-wider">Akses Penganjur</span>
-                <div class="flex-grow h-px bg-purple-400/30"></div>
+            <div class="glass-card p-8 rounded-[2rem] w-full text-center mb-8 relative">
+                <input type="text" id="join-pin" placeholder="PIN Permainan" class="modern-input text-center text-2xl uppercase tracking-widest mb-4 placeholder-slate-300">
+                <input type="text" id="join-name" placeholder="Nama Panggilan" class="modern-input text-center mb-6 placeholder-slate-300">
+                
+                <button id="btn-join" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-xl hover:bg-slate-800 transform hover:-translate-y-1 hover:shadow-xl transition-all duration-200">Masuk Permainan</button>
             </div>
             
-            <button id="btn-host-portal" class="w-full bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 backdrop-blur-sm transition-all mt-2">Hos Kuiz</button>
+            <button id="btn-host-portal" class="w-3/4 bg-white/15 text-white py-3 rounded-2xl font-bold text-lg hover:bg-white/25 backdrop-blur-sm border border-white/20 shadow-lg transform hover:-translate-y-1 transition-all duration-200">Hos Permainan</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="absolute bottom-4 w-full text-center z-10">
+            <p class="text-white/60 text-xs font-medium tracking-wide">Wowhoot! &copy; 2026 By Sir Halim</p>
         </div>
     </div>
 
     <!-- 1.5. Skrin Dashboard Penganjur -->
-    <div id="screen-host-dashboard" class="screen flex-col h-full bg-gray-50 p-4 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl w-full mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <div id="screen-host-dashboard" class="screen flex-col h-full bg-slate-50 p-4 md:p-8 overflow-y-auto">
+        <div class="max-w-5xl w-full mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6 mt-4">
                 <div>
-                    <h2 class="text-3xl font-black text-gray-800">Papan Pemuka</h2>
-                    <p class="text-gray-500 font-medium" id="dashboard-email">Akaun: -</p>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800 tracking-tight">Papan Pemuka</h2>
+                    <p class="text-slate-500 font-medium flex items-center gap-2 mt-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span id="dashboard-email">Akaun: -</span>
+                    </p>
                 </div>
                 <div class="flex gap-3 w-full md:w-auto">
-                    <button onclick="hostLogout()" class="px-5 py-3 border-2 border-gray-300 text-gray-600 rounded-xl font-bold hover:bg-gray-100 transition-colors flex-1 md:flex-none text-center">Log Keluar</button>
-                    <button id="btn-new-quiz" class="px-5 py-3 bg-purple-700 text-white rounded-xl font-bold hover:bg-purple-800 shadow-lg flex-1 md:flex-none text-center">+ Bina Kuiz Baru</button>
+                    <button onclick="hostLogout()" class="px-6 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-2xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all flex-1 md:flex-none text-center shadow-sm">Log Keluar</button>
+                    <button id="btn-new-quiz" class="px-6 py-3.5 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 hover:-translate-y-0.5 transition-all flex-1 md:flex-none text-center flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                        Bina Kuiz
+                    </button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="text-xl font-black text-gray-800 mb-6 border-b pb-4">Sejarah Kuiz Anda</h3>
-                <div id="quiz-history-loader" class="flex justify-center py-10">
-                    <div class="loader loader-dark border-t-purple-600"></div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                    <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Sejarah Kuiz Anda
+                </h3>
+                
+                <div id="quiz-history-loader" class="flex justify-center py-20">
+                    <div class="modern-loader loader-indigo"></div>
                 </div>
-                <div id="quiz-history-empty" class="hidden text-center py-10 text-gray-400 font-medium">
-                    Belum ada kuiz dibina. Klik "+ Bina Kuiz Baru" untuk bermula.
+                
+                <div id="quiz-history-empty" class="hidden text-center py-20 px-4 bg-white rounded-3xl border border-slate-100 border-dashed border-2">
+                    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    </div>
+                    <p class="text-slate-500 font-medium text-lg">Belum ada kuiz dibina.</p>
+                    <p class="text-slate-400 mt-1">Klik "+ Bina Kuiz" di atas untuk bermula.</p>
                 </div>
-                <div id="quiz-history-list" class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 hidden">
+                
+                <div id="quiz-history-list" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 hidden">
                     <!-- Senarai Kuiz Akan Dijana Disini -->
                 </div>
             </div>
@@ -156,196 +264,226 @@
     </div>
 
     <!-- 2. Skrin Host: Sediakan Soalan -->
-    <div id="screen-host-setup" class="screen flex-col h-full bg-gray-50 p-6 overflow-y-auto items-center">
-        <div class="w-full max-w-4xl flex justify-between items-center mb-4">
-            <button onclick="returnToDashboard()" class="text-gray-500 font-bold hover:text-purple-700 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+    <div id="screen-host-setup" class="screen flex-col h-full bg-slate-50 p-4 md:p-8 overflow-y-auto">
+        <div class="w-full max-w-5xl mx-auto flex justify-between items-center mb-6">
+            <button onclick="returnToDashboard()" class="text-slate-500 font-semibold hover:text-indigo-600 flex items-center gap-2 transition-colors bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Kembali
             </button>
         </div>
 
-        <div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100">
-            <h2 class="text-3xl font-black mb-2 text-center text-gray-800">Bina Kuiz Baru</h2>
+        <div class="max-w-5xl w-full mx-auto bg-white rounded-[2rem] shadow-xl p-6 md:p-10 border border-slate-100">
+            <h2 class="text-3xl font-black mb-8 text-center text-slate-800 tracking-tight">Bina Kuiz Baru</h2>
             
-            <div class="mb-6 max-w-md mx-auto">
-                <label class="block text-gray-700 font-bold mb-2">Tajuk Kuiz:</label>
-                <input type="text" id="quiz-title-input" placeholder="Cth: Latihan Sains Bab 1" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl font-bold text-gray-800 focus:border-purple-600 focus:bg-white focus:outline-none transition-colors" maxlength="50">
+            <div class="mb-10 max-w-2xl mx-auto">
+                <label class="block text-slate-700 font-bold mb-3">Tajuk Kuiz</label>
+                <input type="text" id="quiz-title-input" placeholder="Cth: Ujian Kefahaman Topik 1" class="modern-input text-lg" maxlength="50">
             </div>
 
-            <div class="flex flex-col md:flex-row gap-8">
+            <div class="flex flex-col md:flex-row gap-8 bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-100">
                 <!-- Bahagian Muat Naik -->
                 <div class="flex-1">
-                    <div id="upload-box" class="border-4 border-dashed border-purple-200 bg-purple-50/50 rounded-2xl p-8 text-center relative hover:bg-purple-50 transition-colors cursor-pointer group flex flex-col items-center justify-center min-h-[250px]" onclick="document.getElementById('image-upload').click()">
+                    <label class="block text-slate-700 font-bold mb-3">Gambar Soalan</label>
+                    <div id="upload-box" class="border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-2xl p-8 text-center relative hover:bg-indigo-50 transition-colors cursor-pointer group flex flex-col items-center justify-center min-h-[280px]" onclick="document.getElementById('image-upload').click()">
                         <input type="file" id="image-upload" accept="image/*" class="hidden">
-                        <div id="upload-placeholder" class="group-hover:scale-105 transition-transform">
-                            <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        <div id="upload-placeholder" class="group-hover:scale-105 transition-transform duration-300">
+                            <div class="w-16 h-16 bg-white text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-indigo-100">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </div>
-                            <p class="font-bold text-purple-700">Muat Naik Gambar Soalan</p>
-                            <p class="text-xs text-purple-400 mt-1">Sertakan pilihan A,B,C,D dalam gambar.</p>
+                            <p class="font-bold text-indigo-600 text-lg">Klik untuk muat naik</p>
+                            <p class="text-sm text-slate-400 mt-2">Sertakan pilihan A,B,C,D dalam gambar.</p>
                         </div>
-                        <img id="image-preview" class="hidden max-h-48 mx-auto rounded-lg shadow-md object-contain" src="" alt="Preview">
+                        <img id="image-preview" class="hidden max-h-56 mx-auto rounded-xl shadow-md object-contain" src="" alt="Preview">
                     </div>
                 </div>
 
                 <!-- Bahagian Pilihan Jawapan -->
                 <div id="answer-selection" class="hidden flex-1 flex flex-col justify-center">
-                    <label class="block text-gray-700 font-bold mb-3 text-lg">Pilih Jawapan Yang Tepat:</label>
-                    <select id="correct-answer-select" class="w-full p-4 border-2 border-gray-200 bg-gray-50 rounded-xl font-bold text-gray-800 text-lg focus:outline-none focus:border-purple-600 focus:bg-white mb-6 transition-colors cursor-pointer shadow-sm">
+                    <label class="block text-slate-700 font-bold mb-3">Jawapan Yang Tepat</label>
+                    <select id="correct-answer-select" class="modern-input mb-8 cursor-pointer">
                         <option value="0">Pilihan A (Merah)</option>
                         <option value="1">Pilihan B (Biru)</option>
                         <option value="2">Pilihan C (Kuning)</option>
                         <option value="3">Pilihan D (Hijau)</option>
                     </select>
-                    <button id="btn-add-question" class="w-full bg-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-purple-700 shadow-md transform hover:scale-[1.02] transition-all">Sahkan & Tambah Soalan</button>
+                    <button id="btn-add-question" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-700 shadow-lg transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Soalan
+                    </button>
                 </div>
             </div>
 
             <!-- Senarai Soalan -->
-            <div class="border-t border-gray-200 pt-8 mt-8">
-                <div class="flex justify-between items-end mb-4">
-                    <h3 class="font-black text-xl text-gray-800">Senarai Soalan Ditambah</h3>
-                    <span class="bg-purple-100 text-purple-800 text-sm font-bold px-3 py-1 rounded-full"><span id="question-count">0</span> Soalan</span>
+            <div class="mt-10">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-xl text-slate-800">Senarai Soalan</h3>
+                    <span class="bg-indigo-100 text-indigo-700 text-sm font-bold px-4 py-1.5 rounded-full"><span id="question-count">0</span> Soalan</span>
                 </div>
                 
                 <ul id="question-list-ui" class="mb-8 space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    <li class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-gray-400 text-center font-medium italic">Sila tambah sekurang-kurangnya satu soalan.</li>
+                    <li class="bg-slate-50 p-6 rounded-2xl border border-slate-100 border-dashed text-slate-400 text-center font-medium">Belum ada soalan ditambah.</li>
                 </ul>
 
-                <button id="btn-save-create-room" class="w-full bg-green-500 text-white py-5 rounded-xl font-black text-2xl hover:bg-green-600 hidden shadow-xl shadow-green-500/20 transform hover:-translate-y-1 transition-all">Simpan Kuiz & Buka Bilik Lobi</button>
+                <button id="btn-save-create-room" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black text-xl hover:bg-emerald-600 hidden shadow-lg shadow-emerald-200 transform hover:-translate-y-1 transition-all duration-200">Simpan Kuiz & Buka Bilik</button>
             </div>
         </div>
     </div>
 
     <!-- 3. Skrin Lobi (Host & Pemain) -->
-    <div id="screen-lobby" class="screen flex-col h-full bg-gray-50">
+    <div id="screen-lobby" class="screen flex-col h-full bg-slate-50">
         <!-- Header Host -->
-        <div id="lobby-host-header" class="bg-white px-6 py-8 shadow-lg text-center hidden flex-col items-center border-b border-gray-200 relative">
-            <h2 class="text-xl text-gray-500 font-bold mb-2">Sertai permainan menggunakan PIN:</h2>
-            <div class="text-[4rem] md:text-[5rem] leading-none font-black text-gray-900 tracking-widest mb-4 drop-shadow-sm" id="display-pin">------</div>
+        <div id="lobby-host-header" class="bg-white p-8 md:p-12 shadow-sm border-b border-slate-100 text-center hidden flex-col items-center">
+            <span class="bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest mb-6">BILIK LOBI DIBUKA</span>
+            <h2 class="text-2xl text-slate-500 font-semibold mb-2">Sertai permainan menggunakan PIN:</h2>
+            <div class="text-[5rem] md:text-[7rem] leading-none font-black text-slate-900 tracking-tight mb-8" id="display-pin">------</div>
             
-            <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-6 bg-gray-50 p-4 rounded-2xl border border-gray-100 w-full max-w-xl mx-auto">
-                <div id="qrcode" class="p-2 bg-white border border-gray-200 rounded-xl shadow-sm"></div>
-                <div class="text-left flex flex-col justify-center items-center md:items-start">
-                    <p class="text-gray-500 font-bold mb-1 uppercase text-sm tracking-wider">Atau layari pautan</p>
-                    <p id="join-url-display" class="text-purple-700 font-black text-lg md:text-xl mb-3 break-all text-center md:text-left"></p>
-                    <button onclick="copyLink()" class="flex items-center gap-2 bg-white border-2 border-gray-200 text-gray-700 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors shadow-sm">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                        Salin Pautan
-                    </button>
-                    <span id="copy-success" class="text-green-600 text-sm font-bold mt-2 opacity-0 transition-opacity">Berjaya disalin!</span>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10 bg-slate-50 p-6 rounded-3xl border border-slate-100 w-full max-w-2xl mx-auto shadow-inner">
+                <div id="qrcode" class="p-4 bg-white rounded-2xl shadow-sm border border-slate-100"></div>
+                <div class="text-left flex flex-col justify-center items-center md:items-start w-full">
+                    <p class="text-slate-400 font-bold mb-2 uppercase text-sm tracking-widest">Atau layari pautan</p>
+                    <div class="bg-white w-full border border-slate-200 rounded-xl p-3 flex items-center justify-between shadow-sm">
+                        <p id="join-url-display" class="text-indigo-600 font-bold text-lg truncate pr-4"></p>
+                        <button onclick="copyLink()" class="bg-indigo-50 text-indigo-600 p-2 rounded-lg hover:bg-indigo-100 transition-colors" title="Salin Pautan">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+                    <span id="copy-success" class="text-emerald-500 text-sm font-bold mt-2 opacity-0 transition-opacity">Telah disalin!</span>
                 </div>
             </div>
             
-            <div class="flex gap-4">
-                <button onclick="returnToDashboardFromLobby()" class="border-2 border-gray-300 text-gray-600 px-6 py-3 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all">Tutup Bilik</button>
-                <button id="btn-start-game" class="bg-blue-600 text-white px-12 py-3 rounded-xl font-black text-xl hover:bg-blue-700 shadow-xl shadow-blue-600/30 transform hover:-translate-y-1 transition-all">Mula Sekarang</button>
+            <div class="flex gap-4 w-full max-w-2xl mx-auto">
+                <button onclick="returnToDashboardFromLobby()" class="flex-1 bg-white border-2 border-slate-200 text-slate-600 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all">Tutup Bilik</button>
+                <button id="btn-start-game" class="flex-1 bg-slate-900 text-white py-4 rounded-2xl font-black text-xl hover:bg-slate-800 shadow-lg transform hover:-translate-y-1 transition-all">Mula Sekarang</button>
             </div>
         </div>
         
         <!-- Header Pemain -->
-        <div id="lobby-player-header" class="premium-bg p-8 text-center text-white hidden flex-none flex-col items-center justify-center shadow-md z-10 relative overflow-hidden">
-            <div class="absolute top-[-50%] right-[-10%] w-64 h-64 bg-white opacity-5 rounded-full blur-2xl"></div>
-            <h2 class="text-3xl font-black mb-2 relative z-10">Anda telah berjaya masuk!</h2>
-            <p class="text-2xl font-bold text-purple-200 relative z-10" id="player-nickname-display">Pemain</p>
+        <div id="lobby-player-header" class="bg-premium p-12 text-center text-white hidden flex-none flex-col items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')] opacity-5"></div>
+            
+            <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-6 border border-white/30 animate-pop">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-3xl font-black mb-2 relative z-10 tracking-tight">Berjaya Masuk!</h2>
+            <div class="glass-dark px-6 py-2 rounded-full mt-4">
+                <p class="text-xl font-bold text-white relative z-10" id="player-nickname-display">Pemain</p>
+            </div>
         </div>
 
-        <!-- Senarai Pemain untuk kedua-dua Host & Player -->
-        <div id="lobby-players-container" class="flex-1 p-6 md:p-10 overflow-y-auto bg-gray-50">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-black text-gray-800 text-xl md:text-2xl">Peserta Sedia Ada</h3>
-                    <div class="bg-gray-800 text-white font-bold px-4 py-2 rounded-lg text-lg"><span id="player-count">0</span> Menyertai</div>
+        <!-- Senarai Pemain -->
+        <div id="lobby-players-container" class="flex-1 p-6 md:p-10 overflow-y-auto relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="font-bold text-slate-500 uppercase tracking-widest text-sm">Senarai Peserta</h3>
+                    <div class="bg-white shadow-sm border border-slate-200 text-indigo-600 font-black px-5 py-2 rounded-full"><span id="player-count">0</span> Menyertai</div>
                 </div>
-                <div id="players-list" class="flex flex-wrap gap-4"></div>
-                <div id="waiting-msg" class="text-center mt-12 text-gray-400 font-bold text-lg animate-pulse">Menunggu penyertaan pemain...</div>
+                <div id="players-list" class="flex flex-wrap gap-3"></div>
+                <div id="waiting-msg" class="text-center mt-20 text-slate-400 font-medium text-lg flex flex-col items-center gap-4">
+                    <div class="modern-loader loader-indigo opacity-50"></div>
+                    Menunggu peserta lain...
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 4. Skrin Host: Papar Soalan Aktif -->
-    <div id="screen-host-question" class="screen flex-col h-full bg-gray-100">
-        <div class="bg-white p-4 md:p-6 shadow-sm flex justify-between items-center z-10 relative">
-            <div class="w-20 h-20 shrink-0 rounded-full bg-purple-100 flex items-center justify-center text-3xl font-black text-purple-700 border-4 border-purple-200 shadow-inner" id="host-timer">20</div>
-            <h2 class="text-2xl md:text-4xl font-black text-gray-800 flex-1 px-6 text-center drop-shadow-sm">Sila rujuk soalan di bawah</h2>
-            <div class="w-20 shrink-0 text-center font-bold text-gray-400 text-xl" id="question-number-display">1/5</div>
+    <div id="screen-host-question" class="screen flex-col h-full bg-slate-50">
+        <div class="bg-white px-6 py-4 shadow-sm border-b border-slate-100 flex justify-between items-center z-10">
+            <div class="w-16 h-16 shrink-0 rounded-full bg-indigo-50 flex items-center justify-center text-2xl font-black text-indigo-600 border border-indigo-100" id="host-timer">20</div>
+            <h2 class="text-2xl md:text-3xl font-black text-slate-800 flex-1 px-6 text-center tracking-tight">Sila rujuk soalan di bawah</h2>
+            <div class="w-16 shrink-0 text-center font-bold text-slate-400 bg-slate-100 rounded-full py-2 text-sm uppercase tracking-wider" id="question-number-display">1/5</div>
         </div>
         
-        <div class="flex-1 p-4 md:p-8 flex flex-col items-center justify-center bg-white relative z-0">
-            <div class="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
-            
-            <div class="w-full h-full flex justify-center items-center z-10">
-                <img id="host-question-image" src="" class="w-full h-full object-contain animate-pop drop-shadow-xl" alt="Soalan Imej">
+        <div class="flex-1 p-4 md:p-8 flex flex-col items-center justify-center relative z-0">
+            <div class="w-full h-full flex justify-center items-center z-10 max-w-6xl mx-auto">
+                <img id="host-question-image" src="" class="w-full h-full object-contain bg-white rounded-3xl shadow-xl border border-slate-100 p-2 animate-pop" alt="Soalan Imej">
             </div>
         </div>
 
-        <div class="grid grid-cols-2 grid-rows-2 gap-3 p-3 h-[25vh] min-h-[160px] bg-gray-50">
-            <div class="color-red rounded-xl flex items-center justify-center p-2 relative shadow-md"><span class="answer-letter">A</span></div>
-            <div class="color-blue rounded-xl flex items-center justify-center p-2 relative shadow-md"><span class="answer-letter">B</span></div>
-            <div class="color-yellow rounded-xl flex items-center justify-center p-2 relative shadow-md"><span class="answer-letter">C</span></div>
-            <div class="color-green rounded-xl flex items-center justify-center p-2 relative shadow-md"><span class="answer-letter">D</span></div>
+        <div class="grid grid-cols-2 grid-rows-2 gap-4 p-4 md:p-6 h-[25vh] min-h-[160px] bg-white border-t border-slate-100">
+            <div class="color-red rounded-2xl flex items-center justify-center p-2 shadow-sm"><span class="answer-letter">A</span></div>
+            <div class="color-blue rounded-2xl flex items-center justify-center p-2 shadow-sm"><span class="answer-letter">B</span></div>
+            <div class="color-yellow rounded-2xl flex items-center justify-center p-2 shadow-sm"><span class="answer-letter">C</span></div>
+            <div class="color-green rounded-2xl flex items-center justify-center p-2 shadow-sm"><span class="answer-letter">D</span></div>
         </div>
     </div>
 
     <!-- 5. Skrin Pemain: Antaramuka Menjawab -->
-    <div id="screen-player-answer" class="screen flex-col h-full bg-gray-100">
-        <div class="bg-white p-3 text-center shadow-sm flex justify-between items-center px-4 z-10">
-            <div class="text-left">
-                <h2 class="font-bold text-gray-400 text-[10px] uppercase tracking-wider">Masa Baki</h2>
-                <div class="text-3xl font-black text-gray-800" id="player-timer">20</div>
+    <div id="screen-player-answer" class="screen flex-col h-full bg-slate-50">
+        <div class="bg-white p-4 shadow-sm border-b border-slate-100 flex justify-between items-center z-10">
+            <div class="text-left flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-xl font-black text-slate-800" id="player-timer">20</div>
+                <span class="font-bold text-slate-400 text-xs uppercase tracking-widest hidden sm:block">Masa Baki</span>
             </div>
             <div class="text-right">
-                <h2 class="font-bold text-gray-400 text-[10px] uppercase tracking-wider">Status</h2>
-                <div class="text-sm font-bold text-green-600">Terhubung</div>
+                <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Aktif</span>
+                </div>
             </div>
         </div>
         
-        <div class="flex flex-col items-center justify-center bg-white border-b border-gray-200 p-2 h-[45vh] md:h-[55vh] w-full relative z-0">
-            <div class="w-full h-full flex justify-center items-center">
-                <img id="player-question-image" src="" class="w-full h-full object-contain animate-pop" alt="Soalan Imej">
+        <div class="flex flex-col items-center justify-center p-4 h-[40vh] md:h-[50vh] w-full relative z-0">
+            <div class="w-full h-full flex justify-center items-center bg-white rounded-3xl shadow-sm border border-slate-100 p-2 relative">
+                <span class="absolute top-4 left-4 bg-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-20">Rujukan</span>
+                <img id="player-question-image" src="" class="w-full h-full object-contain rounded-2xl animate-pop" alt="Soalan Imej">
             </div>
         </div>
 
-        <div id="player-buttons-container" class="flex-1 grid grid-cols-2 grid-rows-2 gap-2 p-2 bg-gray-100">
-            <button onclick="submitAnswer(0)" class="color-red rounded-xl answer-btn flex items-center justify-center shadow-lg text-white disabled:opacity-40 disabled:cursor-not-allowed"><span class="answer-letter">A</span></button>
-            <button onclick="submitAnswer(1)" class="color-blue rounded-xl answer-btn flex items-center justify-center shadow-lg text-white disabled:opacity-40 disabled:cursor-not-allowed"><span class="answer-letter">B</span></button>
-            <button onclick="submitAnswer(2)" class="color-yellow rounded-xl answer-btn flex items-center justify-center shadow-lg text-white disabled:opacity-40 disabled:cursor-not-allowed"><span class="answer-letter">C</span></button>
-            <button onclick="submitAnswer(3)" class="color-green rounded-xl answer-btn flex items-center justify-center shadow-lg text-white disabled:opacity-40 disabled:cursor-not-allowed"><span class="answer-letter">D</span></button>
+        <div id="player-buttons-container" class="flex-1 grid grid-cols-2 grid-rows-2 gap-3 p-4 bg-white border-t border-slate-100">
+            <button onclick="submitAnswer(0)" class="color-red answer-btn"><span class="answer-letter">A</span></button>
+            <button onclick="submitAnswer(1)" class="color-blue answer-btn"><span class="answer-letter">B</span></button>
+            <button onclick="submitAnswer(2)" class="color-yellow answer-btn"><span class="answer-letter">C</span></button>
+            <button onclick="submitAnswer(3)" class="color-green answer-btn"><span class="answer-letter">D</span></button>
         </div>
         
-        <div id="player-waiting-result" class="hidden flex-1 flex-col items-center justify-center bg-gray-50">
-            <div class="loader loader-dark mb-6"></div>
-            <h3 class="font-black text-2xl text-gray-800 text-center mb-2">Hebat!</h3>
-            <p class="font-medium text-gray-500 text-center px-4">Jawapan direkodkan.<br>Sila tunggu masa tamat.</p>
+        <div id="player-waiting-result" class="hidden flex-1 flex-col items-center justify-center bg-slate-50 px-6">
+            <div class="modern-loader loader-indigo mb-8"></div>
+            <h3 class="font-black text-3xl text-slate-800 text-center mb-2 tracking-tight">Jawapan Direkod!</h3>
+            <p class="font-medium text-slate-500 text-center">Sila tunggu masa tamat untuk mengetahui keputusan anda.</p>
         </div>
     </div>
 
     <!-- 6. Skrin Keputusan & Papan Pendahulu -->
-    <div id="screen-leaderboard" class="screen flex-col h-full premium-bg text-white p-6 md:p-10 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTU0LjYyNyAxOS4zNzNBMzEuOTIgMzEuOTIgMCAwIDAgMzIgMGMtMTcuNjczIDAtMzIgMTQuMzI3LTMyIDMyczE0LjMyNyAzMiAzMiAzMmExNy45MjMgMTcuOTIzIDAgMCAwIDE3LjkyMy0xNy45MjMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+')]"></div>
+    <div id="screen-leaderboard" class="screen flex-col h-full bg-premium-dark p-6 md:p-10 relative overflow-hidden">
+        <!-- Latar Belakang Khas untuk Skrin Keputusan -->
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTU0LjYyNyAxOS4zNzNBMzEuOTIgMzEuOTIgMCAwIDAgMzIgMGMtMTcuNjczIDAtMzIgMTQuMzI3LTMyIDMyczE0LjMyNyAzMiAzMiAzMmExNy45MjMgMTcuOTIzIDAgMCAwIDE3LjkyMy0xNy45MjMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+')] opacity-5"></div>
+        <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-indigo-500/20 to-transparent"></div>
 
-        <div class="relative z-10 flex flex-col h-full max-w-3xl mx-auto w-full">
-            <div id="result-feedback" class="text-center mb-8 hidden animate-pop bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
-                <h2 class="text-5xl md:text-6xl font-black mb-2 drop-shadow-md" id="result-title">Betul!</h2>
-                <div class="inline-block bg-black/30 rounded-full px-6 py-2 mb-2">
-                    <p class="text-xl md:text-2xl font-bold text-yellow-300" id="result-score-change">+1000 markah</p>
+        <div class="relative z-10 flex flex-col h-full max-w-4xl mx-auto w-full">
+            
+            <div id="result-feedback" class="text-center mb-8 hidden animate-pop">
+                <div class="glass-dark rounded-[2rem] p-8 inline-block shadow-2xl">
+                    <h2 class="text-5xl md:text-6xl font-black mb-4 text-white" id="result-title">Tepat!</h2>
+                    <div class="inline-flex items-center gap-2 bg-white/10 rounded-full px-6 py-2 mb-4 border border-white/20">
+                        <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <p class="text-2xl md:text-3xl font-bold text-yellow-400" id="result-score-change">+1000</p>
+                    </div>
+                    <p class="text-indigo-200 font-medium uppercase tracking-widest text-sm">Markah Terkini</p>
+                    <p class="text-white text-3xl font-black mt-1"><span id="result-total-score">0</span></p>
                 </div>
-                <p class="text-lg font-bold text-gray-200 mt-2">Markah Keseluruhan: <span id="result-total-score" class="text-white text-2xl">0</span></p>
             </div>
 
-            <h2 class="text-4xl font-black text-center mb-6 text-white drop-shadow-lg tracking-wide uppercase">Kedudukan Semasa</h2>
-            <div class="flex-1 w-full bg-white/10 rounded-2xl p-4 backdrop-blur-md border border-white/20 shadow-2xl overflow-y-auto" id="leaderboard-list"></div>
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <div class="h-px bg-white/20 flex-1 max-w-[100px]"></div>
+                <h2 class="text-2xl font-bold text-white uppercase tracking-widest text-center">Top 5 Kedudukan</h2>
+                <div class="h-px bg-white/20 flex-1 max-w-[100px]"></div>
+            </div>
+            
+            <div class="flex-1 w-full overflow-y-auto pb-4" id="leaderboard-list">
+                <!-- Senarai kedudukan dijana di sini -->
+            </div>
 
             <!-- Kawalan Penganjur -->
-            <div id="host-leaderboard-controls" class="hidden mt-8 text-center bg-white/5 p-6 rounded-2xl backdrop-blur-sm border border-white/10">
-                <button id="btn-next-question" class="bg-blue-500 text-white px-8 py-4 rounded-xl font-black text-xl hover:bg-blue-600 shadow-lg w-full mb-4 transform hover:scale-[1.02] transition-all">Teruskan ke Soalan Seterusnya</button>
-                <button onclick="returnToDashboardFromLobby()" class="text-purple-200 font-bold hover:text-white transition-colors py-2 px-6">Tamatkan & Kembali ke Menu</button>
+            <div id="host-leaderboard-controls" class="hidden mt-6 text-center pt-4">
+                <button id="btn-next-question" class="w-full bg-white text-indigo-900 py-4 rounded-2xl font-black text-xl hover:bg-indigo-50 shadow-xl transform hover:-translate-y-1 transition-all mb-4">Soalan Seterusnya</button>
+                <button onclick="returnToDashboardFromLobby()" class="text-indigo-300 font-semibold hover:text-white transition-colors underline decoration-indigo-500/50 underline-offset-4">Tamatkan & Kembali ke Menu</button>
             </div>
             
             <!-- Paparan Pemain -->
-            <div id="player-leaderboard-controls" class="hidden mt-8 text-center p-6">
-                <div class="loader mx-auto mb-4 border-t-white w-8 h-8 border-4 hidden" id="player-waiting-loader"></div>
-                <p class="font-bold text-xl text-purple-200" id="player-leaderboard-status">Menunggu arahan penganjur...</p>
+            <div id="player-leaderboard-controls" class="hidden mt-auto text-center pt-8">
+                <div class="modern-loader loader-indigo mx-auto mb-4 border-t-white opacity-50 hidden" id="player-waiting-loader"></div>
+                <p class="font-medium text-indigo-200 animate-pulse" id="player-leaderboard-status">Menunggu hos...</p>
             </div>
         </div>
     </div>
@@ -371,7 +509,7 @@
             };
         }
         
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kahoot-clone-pro';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kahoot-clone-premium';
         const dbGamesPath = 'artifacts/' + appId + '/public/data/kahoot_games';
         const dbPlayersPath = 'artifacts/' + appId + '/public/data/kahoot_players';
 
@@ -418,7 +556,11 @@
             
             const successMsg = document.getElementById('copy-success');
             successMsg.style.opacity = '1';
-            setTimeout(() => { successMsg.style.opacity = '0'; }, 2000);
+            successMsg.style.transform = 'translateY(0)';
+            setTimeout(() => { 
+                successMsg.style.opacity = '0'; 
+                successMsg.style.transform = 'translateY(5px)';
+            }, 2000);
         };
 
         window.resetApp = () => {
@@ -452,7 +594,6 @@
         window.returnToDashboardFromLobby = async () => {
             if(gamePin) {
                 try {
-                    // Beritahu pemain permainan tamat
                     await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'closed' });
                 } catch(e) {}
             }
@@ -468,7 +609,7 @@
             console.error("Ralat inisialisasi Firebase:", e);
             window.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('loading-screen').classList.add('hidden');
-                showError("Sistem gagal berhubung. Sila periksa tetapan.");
+                showError("Sistem gagal berhubung. Sila periksa tetapan rangkaian anda.");
             });
         }
 
@@ -510,10 +651,6 @@
                 if (user) {
                     document.getElementById('loading-screen').style.opacity = '0';
                     setTimeout(() => { document.getElementById('loading-screen').classList.add('hidden'); }, 300);
-                    
-                    if (!user.isAnonymous && document.getElementById('screen-home').classList.contains('active')) {
-                        // Jika ada user aktif dan berada di laman utama, abaikan atau tunggu aksi.
-                    }
                 }
             });
         }
@@ -537,7 +674,7 @@
             const loader = document.getElementById('auth-loading');
             
             if(!email || pass.length < 6) {
-                showError("Sila pastikan e-mel sah dan kata laluan minima 6 aksara.");
+                showError("Sila pastikan e-mel sah dan kata laluan melebihi 6 aksara.");
                 return;
             }
 
@@ -556,13 +693,9 @@
                 console.error(e);
                 let errorMsg = "Ralat pengesahan.";
                 if(e.message.includes('invalid-credential') || e.message.includes('wrong-password')) {
-                    errorMsg = "E-mel atau Kata Laluan salah.";
+                    errorMsg = "E-mel atau kata laluan tidak tepat.";
                 } else if(e.message.includes('email-already')) {
-                    errorMsg = "E-mel ini telah didaftarkan.";
-                } else if(e.message.includes('operation-not-allowed')) {
-                    errorMsg = "Pendaftaran e-mel belum diaktifkan dalam Firebase. Sila ke menu Authentication > Sign-in method > Enable Email/Password.";
-                } else if(e.message.includes('weak-password')) {
-                    errorMsg = "Kata laluan terlalu lemah. Sila guna sekurang-kurangnya 6 aksara.";
+                    errorMsg = "Alamat e-mel ini telah digunakan.";
                 }
                 showError(errorMsg);
             } finally {
@@ -578,14 +711,14 @@
             if(dashboardListenerUnsub) dashboardListenerUnsub();
             try {
                 await signOut(auth);
-                await initAuth(); // Jadi anonymous balik
+                await initAuth(); 
                 resetApp();
             } catch(e) { console.error(e); }
         };
 
         window.loadDashboard = () => {
             showScreen('screen-host-dashboard');
-            document.getElementById('dashboard-email').textContent = `Akaun: ${currentUser.email}`;
+            document.getElementById('dashboard-email').textContent = currentUser.email;
             
             if (dashboardListenerUnsub) dashboardListenerUnsub();
             
@@ -610,23 +743,27 @@
                     
                     const quizzes = [];
                     snapshot.forEach(doc => quizzes.push({ id: doc.id, ...doc.data() }));
-                    quizzes.sort((a,b) => b.createdAt - a.createdAt); // Terbaru diatas
+                    quizzes.sort((a,b) => b.createdAt - a.createdAt); 
                     
                     quizzes.forEach(quiz => {
                         const card = document.createElement('div');
-                        card.className = "bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between";
+                        card.className = "bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-shadow";
                         const dateStr = new Date(quiz.createdAt).toLocaleDateString('ms-MY');
                         
                         card.innerHTML = `
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-800 mb-1 line-clamp-2">${quiz.title}</h4>
-                                <p class="text-sm text-gray-500 font-medium mb-4">${quiz.questions.length} Soalan • ${dateStr}</p>
+                            <div class="mb-6">
+                                <h4 class="font-bold text-xl text-slate-800 mb-2 line-clamp-2">${quiz.title}</h4>
+                                <div class="flex items-center gap-2 text-sm font-medium text-slate-500">
+                                    <span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg">${quiz.questions.length} Soalan</span>
+                                    <span>•</span>
+                                    <span>${dateStr}</span>
+                                </div>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="deleteQuiz('${quiz.id}')" class="p-2 border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors" title="Padam">
+                            <div class="flex gap-3">
+                                <button onclick="deleteQuiz('${quiz.id}')" class="p-3 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-100 transition-colors" title="Padam">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
-                                <button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 bg-purple-100 text-purple-700 font-bold py-2 rounded-lg hover:bg-purple-200 transition-colors">Anjur Semula</button>
+                                <button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-colors shadow-sm">Anjur Semula</button>
                             </div>
                         `;
                         listEl.appendChild(card);
@@ -636,7 +773,7 @@
         };
 
         window.deleteQuiz = async (quizId) => {
-            if(confirm("Padam kuiz ini? Tindakan ini tidak boleh dikembalikan.")) {
+            if(confirm("Adakah anda pasti untuk memadam kuiz ini secara kekal?")) {
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', quizId));
                 } catch(e) { showError("Gagal memadam kuiz."); }
@@ -667,15 +804,13 @@
         const resizeImageAndSave = (file) => {
             const placeholder = document.getElementById('upload-placeholder');
             const originalHTML = placeholder.innerHTML;
-            placeholder.innerHTML = '<div class="loader loader-dark mx-auto border-t-purple-600 mb-2 w-10 h-10 border-4"></div><p class="font-bold text-purple-600">Memproses imej...</p>';
+            placeholder.innerHTML = '<div class="modern-loader loader-indigo mx-auto mb-4"></div><p class="font-bold text-indigo-600">Memproses imej...</p>';
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    
-                    // Besarkan resolusi supaya imej tajam dan besar bila disiarkan di skrin (Max 1200px)
                     const MAX_WIDTH = 1200; 
                     const MAX_HEIGHT = 1200;
                     let width = img.width;
@@ -694,8 +829,7 @@
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Kualiti dikurangkan sedikit kepada 65% untuk mengimbangi resolusi yang tinggi agar di bawah 1MB
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.65); 
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7); 
                     
                     currentImageObj = {
                         mimeType: 'image/jpeg',
@@ -753,20 +887,20 @@
             ul.innerHTML = '';
 
             if (hostQuestions.length === 0) {
-                ul.innerHTML = '<li class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-gray-400 text-center font-medium italic">Sila tambah sekurang-kurangnya satu soalan.</li>';
+                ul.innerHTML = '<li class="bg-slate-50 p-6 rounded-2xl border border-slate-100 border-dashed text-slate-400 text-center font-medium">Belum ada soalan ditambah.</li>';
                 btnCreate.classList.add('hidden');
             } else {
                 hostQuestions.forEach((q, idx) => {
                     const li = document.createElement('li');
-                    li.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-100 font-bold flex justify-between items-center animate-pop";
+                    li.className = "bg-white p-4 rounded-2xl shadow-sm border border-slate-100 font-bold flex justify-between items-center animate-pop mb-3";
                     
                     const answerLabels = [
-                        "<span class='text-red-600 bg-red-50 px-3 py-1 rounded-full'>A (Merah)</span>", 
-                        "<span class='text-blue-600 bg-blue-50 px-3 py-1 rounded-full'>B (Biru)</span>", 
-                        "<span class='text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full'>C (Kuning)</span>", 
-                        "<span class='text-green-600 bg-green-50 px-3 py-1 rounded-full'>D (Hijau)</span>"
+                        "<span class='bg-rose-100 text-rose-700 px-3 py-1 rounded-lg text-sm'>A (Merah)</span>", 
+                        "<span class='bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm'>B (Biru)</span>", 
+                        "<span class='bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-sm'>C (Kuning)</span>", 
+                        "<span class='bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-sm'>D (Hijau)</span>"
                     ];
-                    li.innerHTML = `<span class="text-gray-800">Soalan ${idx + 1}</span> <span>${answerLabels[q.answerIndex]}</span>`;
+                    li.innerHTML = `<span class="text-slate-700">Soalan ${idx + 1}</span> <span>${answerLabels[q.answerIndex]}</span>`;
                     ul.appendChild(li);
                 });
                 btnCreate.classList.remove('hidden');
@@ -779,28 +913,26 @@
             if (hostQuestions.length === 0) return;
             
             const btnCreate = document.getElementById('btn-save-create-room');
-            btnCreate.textContent = "Menyimpan Kuiz...";
+            btnCreate.textContent = "Menyimpan...";
             btnCreate.disabled = true;
 
-            const titleInput = document.getElementById('quiz-title-input').value.trim() || `Kuiz ${new Date().toLocaleDateString('ms-MY')}`;
+            const titleInput = document.getElementById('quiz-title-input').value.trim() || `Kuiz Rawak ${new Date().toLocaleDateString('ms-MY')}`;
             const quizId = "quiz_" + Date.now();
 
             try {
-                // Simpan ke senarai peribadi pengguna (Dashboard History)
                 await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'quizzes', quizId), {
                     title: titleInput,
                     questions: hostQuestions,
                     createdAt: Date.now()
                 });
 
-                // Mulakan Bilik dengan soalan ini
                 await createRoomWithCurrentQuestions();
                 
             } catch(e) {
                 console.error("Ralat simpan:", e);
-                showError("Gagal menyimpan kuiz. Terlalu banyak soalan yang besar boleh melebihi had data (1MB).");
+                showError("Gagal menyimpan. Saiz gambar mungkin terlalu besar melebihi had pangkalan data.");
             } finally {
-                btnCreate.textContent = "Simpan Kuiz & Buka Bilik Lobi";
+                btnCreate.textContent = "Simpan Kuiz & Buka Bilik";
                 btnCreate.disabled = false;
             }
         });
@@ -838,7 +970,7 @@
                     text: joinUrl,
                     width: 140,
                     height: 140,
-                    colorDark : "#1f2937",
+                    colorDark : "#1e293b",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.M
                 });
@@ -851,14 +983,14 @@
 
             } catch (err) {
                 console.error("Ralat bina permainan:", err);
-                showError("Gagal membuka bilik permainan pangkalan data.");
+                showError("Sistem gagal mendaftarkan bilik permainan.");
             }
         };
 
         const setupHostListeners = () => {
             gameListenerUnsub = onSnapshot(doc(db, dbGamesPath, gamePin), (snapshot) => {
                 if (!snapshot.exists()) {
-                    showError("Sesi permainan telah ditutup atau ralat rangkaian berlaku.");
+                    showError("Sesi permainan telah ditutup.");
                     resetApp();
                     return;
                 }
@@ -878,11 +1010,11 @@
             container.innerHTML = '';
             
             if(players.length > 0) { waitMsg.style.display = 'none'; } 
-            else { waitMsg.style.display = 'block'; }
+            else { waitMsg.style.display = 'flex'; }
             
             players.forEach(p => {
                 const el = document.createElement('div');
-                el.className = 'bg-white font-bold text-gray-800 px-5 py-3 rounded-xl shadow-sm border border-gray-100 text-lg animate-pop';
+                el.className = 'bg-white border border-slate-100 text-slate-700 font-bold px-5 py-3 rounded-2xl shadow-sm animate-pop';
                 el.textContent = p.name;
                 container.appendChild(el);
             });
@@ -944,8 +1076,8 @@
             if (currentQuestionIndex >= hostQuestions.length - 1) {
                 btnNext.classList.add('hidden'); 
                 const btnEnd = document.querySelector('button[onclick="returnToDashboardFromLobby()"]');
-                btnEnd.className = "bg-red-500 text-white px-8 py-4 rounded-xl font-black text-xl hover:bg-red-600 shadow-lg w-full mt-4 transform hover:scale-[1.02] transition-all";
-                btnEnd.textContent = "Sesi Selesai (Kembali)";
+                btnEnd.className = "w-full bg-rose-500 text-white py-4 rounded-2xl font-black text-xl hover:bg-rose-600 shadow-xl transform hover:-translate-y-1 transition-all mb-4";
+                btnEnd.textContent = "Sesi Selesai (Tutup Bilik)";
             } else {
                 btnNext.classList.remove('hidden');
                 btnNext.textContent = "Soalan Seterusnya";
@@ -1004,25 +1136,25 @@
         // --- LOGIK PEMAIN (PLAYER) ---
         document.getElementById('btn-join').addEventListener('click', async () => {
             if (!currentUser) {
-                showError("Masalah sambungan pelayan. Sila cuba lagi.");
+                showError("Sistem gagal berhubung. Sila cuba lagi.");
                 return;
             }
             const pinInput = document.getElementById('join-pin').value.trim();
-            const nameInput = document.getElementById('join-name').value.trim() || "Peserta_" + Math.floor(Math.random()*1000);
+            const nameInput = document.getElementById('join-name').value.trim() || "Pemain_" + Math.floor(Math.random()*100);
 
             if (pinInput.length !== 6) {
-                showError("Sila masukkan 6 angka PIN yang tepat.");
+                showError("Sila pastikan PIN mengandungi 6 digit.");
                 return;
             }
 
             const btnJoin = document.getElementById('btn-join');
-            btnJoin.textContent = "Menyertai...";
+            btnJoin.textContent = "Sedang Menyertai...";
             btnJoin.disabled = true;
 
             try {
                 const gameSnap = await getDoc(doc(db, dbGamesPath, pinInput));
                 if (!gameSnap.exists() || gameSnap.data().status === 'closed') {
-                    showError("PIN bilik tidak dijumpai atau sesi telah ditamatkan.");
+                    showError("Bilik tidak wujud atau sesi telah ditamatkan.");
                     btnJoin.textContent = "Masuk Permainan";
                     btnJoin.disabled = false;
                     return;
@@ -1051,7 +1183,7 @@
 
             } catch (err) {
                 console.error("Ralat join:", err);
-                showError("Gagal menyertai bilik permainan. Periksa rangkaian.");
+                showError("Sistem tergendala semasa menyertai bilik.");
                 btnJoin.textContent = "Masuk Permainan";
                 btnJoin.disabled = false;
             }
@@ -1060,7 +1192,7 @@
         const setupPlayerListeners = () => {
             gameListenerUnsub = onSnapshot(doc(db, dbGamesPath, gamePin), (snapshot) => {
                 if (!snapshot.exists() || snapshot.data().status === 'closed') {
-                    showError("Penganjur telah menamatkan pembentangan/permainan.");
+                    showError("Hos telah menamatkan sesi ini.");
                     resetApp();
                     return;
                 }
@@ -1159,11 +1291,11 @@
             let isGameOver = false;
             if (currentQuestionData && currentQuestionData.currentIndex >= currentQuestionData.totalQuestions - 1) {
                 isGameOver = true;
-                pStatus.innerHTML = "<span class='text-green-400 text-3xl block mb-2'>🎉</span>Permainan Tamat!<br>Terima kasih atas penyertaan anda.";
+                pStatus.innerHTML = "<span class='text-yellow-400 text-3xl block mb-2'>🎉</span>Sesi Tamat.<br>Terima kasih atas penyertaan anda!";
                 pStatus.classList.remove('animate-pulse');
                 pLoader.classList.add('hidden');
             } else {
-                pStatus.textContent = "Menunggu arahan penganjur seterusnya...";
+                pStatus.textContent = "Menunggu arahan hos...";
                 pStatus.classList.add('animate-pulse');
                 pLoader.classList.remove('hidden');
                 pLoader.classList.add('block');
@@ -1180,20 +1312,17 @@
                 document.getElementById('result-total-score').textContent = pData.score;
 
                 if (pData.lastAnswerCorrect === true) {
-                    title.textContent = "Tepat Sekali! 🔥";
-                    title.className = "text-5xl md:text-6xl font-black mb-2 text-green-400 drop-shadow-md";
-                    scoreChange.textContent = `+${pData.lastScoreGained} Markah`;
-                    scoreChange.className = "text-xl md:text-2xl font-bold text-green-300";
+                    title.textContent = "Tepat!";
+                    title.className = "text-5xl md:text-6xl font-black mb-4 text-emerald-400";
+                    scoreChange.textContent = `+${pData.lastScoreGained}`;
                 } else if (pData.lastAnswerCorrect === false) {
-                    title.textContent = "Kurang Tepat 😢";
-                    title.className = "text-5xl md:text-6xl font-black mb-2 text-red-400 drop-shadow-md";
-                    scoreChange.textContent = `+0 Markah`;
-                    scoreChange.className = "text-xl md:text-2xl font-bold text-gray-300";
+                    title.textContent = "Kurang Tepat";
+                    title.className = "text-5xl md:text-6xl font-black mb-4 text-rose-400";
+                    scoreChange.textContent = `+0`;
                 } else {
-                    title.textContent = "Masa Tamat ⏰";
-                    title.className = "text-5xl md:text-6xl font-black mb-2 text-yellow-400 drop-shadow-md";
-                    scoreChange.textContent = `+0 Markah`;
-                    scoreChange.className = "text-xl md:text-2xl font-bold text-gray-300";
+                    title.textContent = "Masa Tamat";
+                    title.className = "text-5xl md:text-6xl font-black mb-4 text-amber-400";
+                    scoreChange.textContent = `+0`;
                 }
             }
 
@@ -1213,24 +1342,26 @@
             
             players.slice(0, 5).forEach((p, index) => {
                 const el = document.createElement('div');
-                let bgClass = "bg-white/10 text-white border-white/10";
+                let bgClass = "glass-dark text-white";
+                let medal = '';
                 
                 if (index === 0) {
-                    bgClass = "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-xl scale-[1.03] my-3 border-none";
+                    bgClass = "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-xl scale-[1.02] border-none my-3";
+                    medal = ' 🥇';
                 } else if (index === 1) {
-                    bgClass = "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-900 shadow-md my-2 border-none";
+                    bgClass = "bg-gradient-to-r from-slate-300 to-slate-400 text-slate-800 shadow-lg border-none my-2";
+                    medal = ' 🥈';
                 } else if (index === 2) {
-                    bgClass = "bg-gradient-to-r from-orange-300 to-orange-500 text-white shadow-md my-2 border-none";
+                    bgClass = "bg-gradient-to-r from-orange-300 to-orange-500 text-white shadow-lg border-none my-2";
+                    medal = ' 🥉';
                 }
                 
-                el.className = `${bgClass} rounded-xl px-5 py-4 mb-2 flex justify-between items-center font-bold text-lg md:text-xl border transition-all animate-pop`;
+                el.className = `${bgClass} p-4 rounded-2xl mb-3 flex justify-between items-center text-lg md:text-xl font-bold animate-pop`;
                 
                 const nameDiv = document.createElement('div');
-                const medal = index === 0 ? ' 🥇' : index === 1 ? ' 🥈' : index === 2 ? ' 🥉' : '';
-                nameDiv.innerHTML = `<span class="opacity-70 mr-4 font-normal text-sm md:text-base">#${index+1}</span> ${p.name}${medal}`;
+                nameDiv.innerHTML = `<span class="opacity-70 mr-3 text-sm font-semibold">#${index+1}</span> ${p.name}${medal}`;
                 
                 const scoreDiv = document.createElement('div');
-                scoreDiv.className = "tracking-wider";
                 scoreDiv.textContent = p.score;
                 
                 el.appendChild(nameDiv);
