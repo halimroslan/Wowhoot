@@ -148,7 +148,6 @@
             width: 100%;
             text-align: center;
             transition: opacity 0.2s;
-            text-transform: uppercase;
         }
         .modern-input:focus + .fake-placeholder,
         .modern-input:not(:placeholder-shown) + .fake-placeholder {
@@ -248,7 +247,7 @@
 
                 <div class="input-container mb-8">
                     <input type="text" id="join-name" placeholder=" " class="modern-input text-center text-2xl uppercase font-black">
-                    <div class="fake-placeholder">Nama Samaran</div>
+                    <div class="fake-placeholder uppercase">NAMA SAMARAN</div>
                 </div>
                 
                 <button id="btn-join" class="w-full bg-emerald-400 border-4 border-slate-900 text-slate-900 py-5 rounded-2xl font-black text-3xl hover:bg-emerald-300 transform hover:-translate-y-2 shadow-[6px_6px_0_0_#1e293b] active:translate-y-2 active:shadow-[0_0_0_0_#1e293b] transition-all duration-200 leading-none uppercase">
@@ -270,7 +269,7 @@
         <div class="max-w-5xl w-full mx-auto relative z-10">
             <div class="glass-card flex flex-col md:flex-row justify-between items-center mb-10 p-6 gap-6 mt-4">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight uppercase">Papan Pemuka</h2>
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight uppercase">Dashboard</h2>
                     <p class="text-slate-600 font-bold flex items-center gap-2 mt-2 text-lg">
                         <span class="w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-900"></span>
                         <span id="dashboard-email">Akaun: Tiada</span>
@@ -802,7 +801,7 @@
                                 <button onclick="deleteQuiz('${quiz.id}')" class="p-4 bg-rose-400 border-4 border-slate-900 text-slate-900 rounded-2xl hover:bg-rose-300 shadow-[4px_4px_0_0_#1e293b] transition-colors" title="Padam">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
-                                <button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 bg-emerald-400 border-4 border-slate-900 text-slate-900 text-xl font-black py-3 rounded-2xl hover:bg-emerald-300 transition-colors shadow-[4px_4px_0_0_#1e293b] uppercase">Anjur Semula</button>
+                                <button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 bg-emerald-400 border-4 border-slate-900 text-slate-900 text-xl font-black py-3 rounded-2xl hover:bg-emerald-300 transition-colors shadow-[4px_4px_0_0_#1e293b] uppercase">Hos Semula</button>
                             </div>
                         `;
                         listEl.appendChild(card);
