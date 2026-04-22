@@ -406,7 +406,7 @@
         };
 
         window.copyLink = () => {
-            const url = window.location.href.split('?')[0];
+            const url = window.location.href.split('?')[0] + (gamePin ? '?pin=' + gamePin : '');
             const tempInput = document.createElement("input");
             document.body.appendChild(tempInput);
             tempInput.value = url;
@@ -428,6 +428,11 @@
             hostQuestions = [];
             currentQuestionIndex = 0;
             currentImageObj = null;
+            
+            // Buang pin dari URL jika ada untuk kembali ke asal
+            window.history.replaceState({}, document.title, window.location.pathname);
+            document.getElementById('join-pin').value = '';
+            
             showScreen('screen-home');
             document.getElementById('upload-box').classList.remove('hidden');
             document.getElementById('image-upload').value = '';
@@ -641,9 +646,9 @@
                 
                 const qrContainer = document.getElementById('qrcode');
                 qrContainer.innerHTML = '';
-                const joinUrl = window.location.href.split('?')[0]; 
+                const joinUrl = window.location.href.split('?')[0] + '?pin=' + gamePin; 
                 
-                let displayUrl = joinUrl.replace(/^https?:\/\//, ''); // buang https:// untuk lebih kemas
+                let displayUrl = window.location.href.split('?')[0].replace(/^https?:\/\//, ''); // buang https:// untuk paparan kemas
                 if(displayUrl.length > 35) displayUrl = displayUrl.substring(0, 35) + '...';
                 document.getElementById('join-url-display').textContent = displayUrl;
 
@@ -1071,6 +1076,19 @@
 
         window.onload = () => {
             initAuth();
+            
+            // Periksa jika ada parameter PIN di dalam URL (Pemain masuk menerusi QR atau Pautan)
+            const urlParams = new URLSearchParams(window.location.search);
+            const pinParam = urlParams.get('pin');
+            
+            if (pinParam) {
+                document.getElementById('join-pin').value = pinParam;
+                
+                // Fokus terus ke ruangan nama untuk mudahkan urusan pemain
+                setTimeout(() => {
+                    document.getElementById('join-name').focus();
+                }, 500);
+            }
         };
 
     </script>
