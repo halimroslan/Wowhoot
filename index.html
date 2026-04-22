@@ -18,7 +18,7 @@
             padding: 0;
         }
 
-        /* Latar Belakang Playful Berlapis (Inspirasi AlphaPod) */
+        /* Latar Belakang Playful Berlapis */
         .bg-vibrant {
             background: linear-gradient(to bottom, #6366f1 0%, #6366f1 45%, #84cc16 45%, #84cc16 75%, #1e1b4b 75%, #1e1b4b 100%);
             min-height: 100vh;
@@ -32,21 +32,22 @@
         /* Gear & Elemen Mekanikal */
         .gear {
             position: absolute;
-            fill: rgba(255, 255, 255, 0.15);
-            animation: spin 12s linear infinite;
+            fill: rgba(255, 255, 255, 0.2);
+            animation: spin 15s linear infinite;
             z-index: 1;
         }
-        .gear-reverse { animation: spin-reverse 18s linear infinite; }
+        .gear-reverse { animation: spin-reverse 20s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
 
+        /* Awan Terapung */
         .cloud {
             position: absolute;
             background: white;
-            opacity: 0.2;
+            opacity: 0.3;
             border-radius: 50px;
             z-index: 1;
-            animation: float-horizontal 30s linear infinite;
+            animation: float-horizontal 40s linear infinite;
         }
         @keyframes float-horizontal { 0% { transform: translateX(-200px); } 100% { transform: translateX(110vw); } }
 
@@ -81,7 +82,7 @@
         }
 
         .btn-primary-wow { background-color: #1e1b4b; color: white; }
-        .btn-secondary-wow { background-color: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.4); }
+        .btn-secondary-wow { background-color: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.4); }
 
         /* Logo & Typography */
         .logo-text {
@@ -157,7 +158,16 @@
             text-shadow: 0 4px 0 rgba(0,0,0,0.2);
         }
 
-        /* Screen Transitions */
+        /* Avatar Box */
+        .avatar-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 2rem;
+            box-shadow: 0 8px 0 #cbd5e1;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
         .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
         .screen.active { display: flex; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -182,20 +192,9 @@
         }
         .modern-input:focus + .fake-placeholder, .modern-input:not(:placeholder-shown) + .fake-placeholder { opacity: 0; }
 
-        /* Avatar Box */
-        .avatar-box {
-            background: white;
-            padding: 1rem;
-            border-radius: 2rem;
-            box-shadow: 0 8px 0 #cbd5e1;
-            animation: bounce 2s infinite ease-in-out;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
         .modern-loader { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Podium Sequence */
         .podium-item { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
         .podium-show { opacity: 1; transform: translateY(0); }
     </style>
@@ -203,14 +202,18 @@
 <body>
 
     <div class="bg-vibrant">
-        <!-- Dekoratif Steampunk Latar Belakang -->
-        <svg class="gear top-10 -left-10 w-24 h-24" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
+        <!-- Dekoratif Bergerak Ringkas -->
+        <div class="cloud w-24 h-8 top-10" style="animation-delay: 0s;"></div>
+        <div class="cloud w-32 h-10 top-32" style="animation-delay: -5s;"></div>
+        
+        <!-- Gear Berputar Latar Belakang -->
+        <svg class="gear top-5 -left-10 w-24 h-24" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
         <svg class="gear gear-reverse bottom-20 -right-10 w-32 h-32" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
 
         <!-- Loading Screen -->
         <div id="loading-screen" class="fixed inset-0 bg-indigo-900 z-[250] flex flex-col items-center justify-center transition-opacity duration-300">
             <div class="modern-loader mb-6"></div>
-            <p class="text-white font-black animate-pulse">MENYEDIAKAN Wowhoot!...</p>
+            <p class="text-white font-black animate-pulse">MEMBINA Wowhoot!...</p>
         </div>
 
         <!-- 1. Skrin Utama -->
@@ -249,9 +252,6 @@
 
         <!-- 1.5 Dashboard -->
         <div id="screen-host-dashboard" class="screen p-6 min-h-screen bg-slate-50 relative overflow-hidden">
-            <!-- Dekorasi Dashboard AlphaPod Style -->
-            <svg class="gear top-40 -right-10 w-24 h-24 opacity-5" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97C19.47 12.65 19.5 12.33 19.5 12C19.5 11.67 19.47 11.34 19.43 11L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.34 14.86 5.12L14.47 2.47C14.44 2.23 14.24 2.05 14 2.05H10C9.76 2.05 9.56 2.23 9.53 2.47L9.14 5.12C8.53 5.34 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.65 4.57 12.97L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.66 9.14 18.88L9.53 21.53C9.56 21.77 9.76 21.95 10 21.95H14C14.24 21.95 14.44 21.77 14.47 21.53L14.86 18.88C15.47 18.66 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.97Z"/></svg>
-            
             <div class="max-w-4xl w-full z-10">
                 <div class="dashboard-header p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-l-8 border-l-indigo-600">
                     <div class="text-center md:text-left">
@@ -275,7 +275,7 @@
             </div>
         </div>
 
-        <!-- 2. Setup -->
+        <!-- SETUP SCREEN -->
         <div id="screen-host-setup" class="screen p-6 min-h-screen bg-slate-50">
             <div class="max-w-3xl w-full">
                 <button onclick="returnToDashboard()" class="text-indigo-900 font-black text-[10px] tracking-widest mb-4 uppercase flex items-center gap-2">
@@ -302,7 +302,7 @@
             </div>
         </div>
 
-        <!-- 3. Lobi -->
+        <!-- LOBI SCREEN -->
         <div id="screen-lobby" class="screen min-h-screen bg-slate-50">
             <div id="lobby-host-header" class="w-full bg-white p-6 shadow-xl flex flex-col items-center text-center hidden border-b-8 border-indigo-900">
                 <h2 class="text-slate-400 font-black text-[10px] tracking-widest uppercase mb-2">Wowhoot PIN</h2>
@@ -327,7 +327,7 @@
             </div>
         </div>
 
-        <!-- 4. Soalan Host -->
+        <!-- Gameplay Screens -->
         <div id="screen-host-question" class="screen h-screen bg-white">
             <div class="w-full p-4 border-b-2 flex justify-between items-center bg-white">
                 <div id="host-timer" class="w-12 h-12 rounded-xl bg-rose-500 text-white flex items-center justify-center text-xl font-black">20</div>
@@ -365,7 +365,7 @@
             </div>
         </div>
 
-        <!-- 6. Leaderboard / Podium -->
+        <!-- Leaderboard -->
         <div id="screen-leaderboard" class="screen p-6 overflow-y-auto">
             <div id="result-feedback" class="text-center mb-8 hidden">
                 <div class="glass-card p-6 inline-block">
@@ -418,7 +418,7 @@
             messagingSenderId: "238792040544",
             appId: "1:238792040544:web:5bf70a5f722dd10c1b2305"
         };
-        const appId = 'wowhoot-v8-final-mechanical';
+        const appId = 'wowhoot-v9-intl-ready';
         const dbGamesPath = 'artifacts/' + appId + '/public/data/kahoot_games';
         const dbPlayersPath = 'artifacts/' + appId + '/public/data/kahoot_players';
 
@@ -475,7 +475,6 @@
             });
         };
 
-        // UI Handlers
         const handleAuthAction = async (isLogin) => {
             const e = safeGet('auth-email').value, p = safeGet('auth-pass').value;
             if(!e || p.length < 6) return showError("Data tidak sah.");
@@ -497,7 +496,7 @@
                 snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b)=>b.createdAt-a.createdAt).forEach(quiz => {
                     const card = document.createElement('div');
                     card.className = "quiz-card p-6 flex flex-col justify-between animate-pop";
-                    card.innerHTML = `<h4 class="font-black text-indigo-950 mb-6 uppercase text-sm truncate">${quiz.title}</h4><div class="flex gap-2"><button onclick="deleteQuiz('${quiz.id}')" class="p-3 bg-rose-50 text-rose-500 rounded-xl"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg></button><button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 px-4 py-2 bg-indigo-900 text-white font-black rounded-xl text-xs uppercase">HOS</button></div>`;
+                    card.innerHTML = `<h4 class="font-black text-indigo-950 mb-6 uppercase text-sm truncate tracking-tighter">${quiz.title}</h4><div class="flex gap-2"><button onclick="deleteQuiz('${quiz.id}')" class="p-3 bg-rose-50 text-rose-500 rounded-xl"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg></button><button onclick="hostExistingQuiz('${quiz.id}')" class="flex-1 px-4 py-2 bg-indigo-900 text-white font-black rounded-xl text-xs uppercase tracking-widest shadow-[0_4px_0_#4338ca] active:translate-y-1 active:shadow-none transition-all">HOS</button></div>`;
                     if(list) list.appendChild(card);
                 });
             });
@@ -517,7 +516,7 @@
             hostQuestions.forEach((q, i) => {
                 const li = document.createElement('li');
                 li.className = "bg-white p-3 rounded-xl border-2 border-indigo-100 flex justify-between items-center shadow-sm";
-                li.innerHTML = `<span class="font-black text-[10px] uppercase text-indigo-900">SOALAN ${i+1}</span><span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase">${["A", "B", "C", "D"][q.answerIndex]}</span>`;
+                li.innerHTML = `<span class="font-black text-[10px] uppercase text-indigo-900">Soalan ${i+1}</span><span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase">${["A", "B", "C", "D"][q.answerIndex]}</span>`;
                 ul.appendChild(li);
             });
             if(hostQuestions.length > 0) btn.classList.remove('hidden'); else btn.classList.add('hidden');
@@ -621,10 +620,6 @@
         const showPlayerLeaderboard = async () => {
             showScreen('screen-leaderboard');
             safeGet('host-leaderboard-controls').classList.add('hidden');
-            const st = document.createElement('p');
-            st.className = "text-white text-center font-black animate-pulse mt-6 uppercase tracking-widest text-xs";
-            st.textContent = "MENUNGGU HOS...";
-            if(currentQuestionData && currentQuestionData.currentIndex >= currentQuestionData.totalQuestions - 1) st.innerHTML = "TAMAT!";
             const s = await getDoc(doc(db, dbPlayersPath, currentUser.uid));
             if(s.exists()){
                 const p = s.data(); safeGet('result-feedback').classList.remove('hidden');
