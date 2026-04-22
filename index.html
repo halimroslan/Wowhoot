@@ -232,38 +232,37 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Konfigurasi Gemini
-        const apiKey = ""; 
+        // --- KONFIGURASI GEMINI (PENTING UNTUK PUBLISH DI LUAR) ---
+        let apiKey = "";
         const geminiModel = "gemini-2.5-flash-preview-09-2025";
+        if (typeof __firebase_config === 'undefined') {
+            // Sila letakkan API Key Gemini anda di bawah jika publish di luar
+            apiKey = "AIzaSyB65REVhHCjCUTXI_jFNzI2OQKOsExnr4k";
+        }
         
-        // Konfigurasi Firebase (Mematuhi Peraturan Persekitaran)
+        // --- KONFIGURASI FIREBASE (PENTING UNTUK PUBLISH DI LUAR) ---
         let firebaseConfig;
-        try {
-            firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        } catch (e) {
-            console.error("Firebase config tiada.");
+        
+        if (typeof __firebase_config !== 'undefined') {
+            // Berjalan dalam sistem ujian
+            firebaseConfig = JSON.parse(__firebase_config);
+        } else {
+            // Sila buat projek di console.firebase.google.com dan masukkan config anda
+            firebaseConfig = {
+                apiKey: "AIzaSyCZH6ZT1-_Eg5Zgew_ylRqEwagyIlriTIQ",
+                authDomain: "wowhoot-40834.firebaseapp.com",
+                projectId: "wowhoot-40834",
+                storageBucket: "wowhoot-40834.firebasestorage.app",
+                messagingSenderId: "238792040544",
+                appId: "1:238792040544:web:5bf70a5f722dd10c1b2305"
+            };
         }
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'kahoot-clone-123';
         const dbGamesPath = 'artifacts/' + appId + '/public/data/kahoot_games';
         const dbPlayersPath = 'artifacts/' + appId + '/public/data/kahoot_players';
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // State Aplikasi
-        let currentUser = null;
-        let gamePin = "";
-        let isHost = false;
-        let base64ImageObj = null; // Menyimpan imej yang dimuat naik (base64)
-        let currentQuestionData = null;
-        let intervalTimer = null;
-        let timeLeft = 20;
-        
-        // Listeners
-        let gameListenerUnsub = null;
-        let playersListenerUnsub = null;
+        let app, auth, db;
 
         // --- Fungsi Bantuan ---
         window.showScreen = (screenId) => {
@@ -292,8 +291,38 @@
             showScreen('screen-home');
         };
 
+        // Cuba hidupkan sambungan ke pangkalan data
+        try {
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("LETAK_")) {
+                throw new Error("Anda perlu memasukkan Firebase Config anda sendiri di dalam kod untuk menggunakan aplikasi ini di luar.");
+            }
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch (e) {
+            console.error("Ralat inisialisasi:", e);
+            window.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                showError(e.message);
+            });
+        }
+
+        // State Aplikasi
+        let currentUser = null;
+        let gamePin = "";
+        let isHost = false;
+        let base64ImageObj = null; 
+        let currentQuestionData = null;
+        let intervalTimer = null;
+        let timeLeft = 20;
+        
+        // Listeners
+        let gameListenerUnsub = null;
+        let playersListenerUnsub = null;
+
         // --- Inisialisasi Auth ---
         const initAuth = async () => {
+            if (!auth) return; // Berhenti jika gagal setup firebase
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
@@ -303,20 +332,25 @@
             } catch (err) {
                 console.error("Auth ralat:", err);
                 document.getElementById('loading-screen').classList.add('hidden');
-                showError("Gagal menyambung. Sila muat semula halaman.");
+                showError("Gagal menyambung. Pastikan Anonymous Authentication telah diaktifkan dalam Firebase.");
             }
         };
 
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                document.getElementById('loading-screen').classList.add('hidden');
-            }
-        });
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    document.getElementById('loading-screen').classList.add('hidden');
+                }
+            });
+        }
 
         // --- Logik Penganjur (Host) ---
         document.getElementById('btn-host-start').addEventListener('click', () => {
-            if (!currentUser) return;
+            if (!currentUser) {
+                showError("Masalah sambungan pelayan. Pastikan kod diletakkan dengan betul.");
+                return;
+            }
             isHost = true;
             showScreen('screen-host-setup');
         });
@@ -347,6 +381,11 @@
         // Panggil Gemini API untuk Jana Soalan
         document.getElementById('btn-generate-q').addEventListener('click', async () => {
             if (!base64ImageObj) return;
+
+            if (!apiKey || apiKey.includes("LETAK_")) {
+                showError("Sila letak Gemini API Key anda dalam kod untuk membolehkan ciri AI ini.");
+                return;
+            }
 
             const btn = document.getElementById('btn-generate-q');
             const text = document.getElementById('generate-text');
@@ -593,7 +632,10 @@
 
         // --- Logik Pemain (Player) ---
         document.getElementById('btn-join').addEventListener('click', async () => {
-            if (!currentUser) return;
+            if (!currentUser) {
+                showError("Masalah sambungan pelayan. Pastikan kod diletakkan dengan betul.");
+                return;
+            }
             const pinInput = document.getElementById('join-pin').value.trim();
             const nameInput = document.getElementById('join-name').value.trim() || "Pemain" + Math.floor(Math.random()*1000);
 
