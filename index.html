@@ -287,7 +287,7 @@
             <div>
                 <h3 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3 uppercase bg-white inline-block px-6 py-2 border-4 border-slate-900 shadow-[4px_4px_0_0_#1e293b] rounded-2xl">
                     <svg class="w-8 h-8 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Sejarah Kuiz Anda
+                    Kuiz Anda
                 </h3>
                 
                 <div id="quiz-history-loader" class="flex justify-center py-20">
@@ -440,6 +440,42 @@
             <div class="color-blue rounded-3xl flex items-center justify-center p-2"><span class="answer-letter">B</span></div>
             <div class="color-yellow rounded-3xl flex items-center justify-center p-2"><span class="answer-letter">C</span></div>
             <div class="color-green rounded-3xl flex items-center justify-center p-2"><span class="answer-letter">D</span></div>
+        </div>
+    </div>
+
+    <!-- NEW SCREEN: Host Analysis Chart -->
+    <div id="screen-host-analysis" class="screen flex-col h-full bg-premium">
+        <div class="bg-white border-b-8 border-slate-900 px-6 py-4 flex justify-between items-center z-10">
+            <h2 class="text-3xl md:text-5xl font-black text-slate-800 flex-1 text-center tracking-tight uppercase" style="-webkit-text-stroke: 1px white;">Analisis Jawapan</h2>
+        </div>
+        
+        <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 w-full max-w-5xl mx-auto z-0">
+            <div class="w-full bg-white border-4 border-slate-900 rounded-[2rem] shadow-[8px_8px_0_0_#1e293b] p-8 flex items-end justify-center gap-4 md:gap-12 h-[50vh] min-h-[300px]">
+                <div class="flex flex-col items-center justify-end h-full w-1/4">
+                    <span id="count-a" class="text-4xl font-black mb-4 text-slate-800">0</span>
+                    <div id="bar-a" class="w-full color-red rounded-t-2xl border-4 border-b-0 border-slate-900 transition-all duration-1000" style="height: 0%;"></div>
+                    <div id="label-a" class="w-full color-red text-center py-4 rounded-b-2xl border-4 border-t-0 border-slate-900 font-black text-white text-3xl flex items-center justify-center">A</div>
+                </div>
+                <div class="flex flex-col items-center justify-end h-full w-1/4">
+                    <span id="count-b" class="text-4xl font-black mb-4 text-slate-800">0</span>
+                    <div id="bar-b" class="w-full color-blue rounded-t-2xl border-4 border-b-0 border-slate-900 transition-all duration-1000" style="height: 0%;"></div>
+                    <div id="label-b" class="w-full color-blue text-center py-4 rounded-b-2xl border-4 border-t-0 border-slate-900 font-black text-white text-3xl flex items-center justify-center">B</div>
+                </div>
+                <div class="flex flex-col items-center justify-end h-full w-1/4">
+                    <span id="count-c" class="text-4xl font-black mb-4 text-slate-800">0</span>
+                    <div id="bar-c" class="w-full color-yellow rounded-t-2xl border-4 border-b-0 border-slate-900 transition-all duration-1000" style="height: 0%;"></div>
+                    <div id="label-c" class="w-full color-yellow text-center py-4 rounded-b-2xl border-4 border-t-0 border-slate-900 font-black text-white text-3xl flex items-center justify-center">C</div>
+                </div>
+                <div class="flex flex-col items-center justify-end h-full w-1/4">
+                    <span id="count-d" class="text-4xl font-black mb-4 text-slate-800">0</span>
+                    <div id="bar-d" class="w-full color-green rounded-t-2xl border-4 border-b-0 border-slate-900 transition-all duration-1000" style="height: 0%;"></div>
+                    <div id="label-d" class="w-full color-green text-center py-4 rounded-b-2xl border-4 border-t-0 border-slate-900 font-black text-white text-3xl flex items-center justify-center">D</div>
+                </div>
+            </div>
+            
+            <div class="mt-10 w-full max-w-xl text-center">
+                <button id="btn-to-leaderboard" class="w-full bg-emerald-400 border-4 border-slate-900 text-slate-900 py-6 rounded-2xl font-black text-3xl hover:bg-emerald-300 shadow-[8px_8px_0_0_#1e293b] transform hover:-translate-y-2 active:translate-y-2 active:shadow-none transition-all uppercase">Lihat Kedudukan</button>
+            </div>
         </div>
     </div>
 
@@ -1008,10 +1044,64 @@
 
         const finishQuestionAsHost = async () => {
             try {
+                // Keadaan bertukar kepada 'analysis' selepas soalan dijawab
+                await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'analysis' });
+                showAnalysisAsHost();
+            } catch (err) { console.error(err); }
+        };
+
+        const showAnalysisAsHost = async () => {
+            showScreen('screen-host-analysis');
+            const snap = await getDoc(doc(db, dbGamesPath, gamePin));
+            if (!snap.exists()) return;
+            
+            const gameData = snap.data();
+            const qStartedAt = gameData.startedAt || 0;
+            const correctIdx = gameData.questionInfo.answerIndex;
+
+            onSnapshot(collection(db, dbPlayersPath), (snapshot) => {
+                let counts = [0, 0, 0, 0];
+                snapshot.forEach(d => {
+                    const p = d.data();
+                    // Semak pemain mana yang menjawab soalan terkini ini
+                    if (p.pin === gamePin && p.answeredAt && p.answeredAt >= qStartedAt && p.lastAnswerIndex !== undefined) {
+                        counts[p.lastAnswerIndex]++;
+                    }
+                });
+
+                const maxCount = Math.max(...counts, 1);
+                const letters = ['a', 'b', 'c', 'd'];
+                const labelsDisplay = ['A', 'B', 'C', 'D'];
+                
+                for(let i = 0; i < 4; i++) {
+                    const bar = document.getElementById(`bar-${letters[i]}`);
+                    const countTxt = document.getElementById(`count-${letters[i]}`);
+                    const label = document.getElementById(`label-${letters[i]}`);
+                    
+                    countTxt.textContent = counts[i];
+                    
+                    setTimeout(() => {
+                        bar.style.height = `${(counts[i] / maxCount) * 100}%`;
+                    }, 100);
+
+                    // Serlahkan jawapan betul
+                    if (i === correctIdx) {
+                        bar.style.opacity = '1';
+                        label.innerHTML = `${labelsDisplay[i]} <span class="text-white ml-2">✔</span>`;
+                    } else {
+                        bar.style.opacity = '0.4';
+                        label.innerHTML = `${labelsDisplay[i]}`;
+                    }
+                }
+            });
+        };
+
+        document.getElementById('btn-to-leaderboard').addEventListener('click', async () => {
+            try {
                 await updateDoc(doc(db, dbGamesPath, gamePin), { status: 'leaderboard' });
                 showLeaderboardAsHost();
             } catch (err) { console.error(err); }
-        };
+        });
 
         const showLeaderboardAsHost = async () => {
             showScreen('screen-leaderboard');
@@ -1082,6 +1172,7 @@
                 if (!snapshot.exists() || snapshot.data().status === 'closed') { resetApp(); return; }
                 const data = snapshot.data();
                 if (data.status === 'playing') { currentQuestionData = data.questionInfo; startPlayerAnswerScreen(); } 
+                else if (data.status === 'analysis') { showPlayerResultOnly(); }
                 else if (data.status === 'leaderboard') { showLeaderboardAsPlayer(); }
             });
         };
@@ -1113,7 +1204,11 @@
                 const pSnap = await getDoc(doc(db, dbPlayersPath, currentUser.uid));
                 const currentScore = pSnap.exists() ? pSnap.data().score : 0;
                 await updateDoc(doc(db, dbPlayersPath, currentUser.uid), {
-                    answeredAt: Date.now(), lastAnswerCorrect: isCorrect, lastScoreGained: scoreGained, score: currentScore + scoreGained
+                    answeredAt: Date.now(), 
+                    lastAnswerCorrect: isCorrect, 
+                    lastScoreGained: scoreGained, 
+                    score: currentScore + scoreGained,
+                    lastAnswerIndex: index
                 });
                 waitForResult();
             } catch (err) { console.error(err); }
@@ -1123,6 +1218,37 @@
             document.getElementById('player-buttons-grid').classList.add('hidden');
             document.getElementById('player-waiting-result').classList.remove('hidden');
             document.getElementById('player-waiting-result').classList.add('flex');
+        };
+
+        const showPlayerResultOnly = async () => {
+            showScreen('screen-leaderboard');
+            document.getElementById('host-leaderboard-controls').classList.add('hidden');
+            document.getElementById('player-leaderboard-controls').classList.remove('hidden');
+            const pStatus = document.getElementById('player-leaderboard-status');
+            const pLoader = document.getElementById('player-waiting-loader');
+            
+            pStatus.textContent = "Lihat carta di skrin Hos...";
+            pLoader.classList.add('hidden');
+            
+            document.getElementById('leaderboard-list').innerHTML = ''; // Kosongkan kedudukan pada peringkat ini
+
+            const pSnap = await getDoc(doc(db, dbPlayersPath, currentUser.uid));
+            if (pSnap.exists()) {
+                const pData = pSnap.data();
+                const fb = document.getElementById('result-feedback'); fb.classList.remove('hidden');
+                document.getElementById('result-total-score').textContent = pData.score;
+                const title = document.getElementById('result-title');
+                const scoreChange = document.getElementById('result-score-change');
+                if (pData.lastAnswerCorrect) { 
+                    title.textContent = "TEPAT!"; 
+                    title.className = "text-6xl md:text-7xl font-black mb-6 uppercase tracking-widest text-emerald-400"; 
+                    scoreChange.textContent = `+${pData.lastScoreGained}`; 
+                } else { 
+                    title.textContent = "ALAMAK..."; 
+                    title.className = "text-6xl md:text-7xl font-black mb-6 uppercase tracking-widest text-rose-400"; 
+                    scoreChange.textContent = `+0`; 
+                }
+            }
         };
 
         const showLeaderboardAsPlayer = async () => {
